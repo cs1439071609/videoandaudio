@@ -1,4 +1,13 @@
 <resources>
     <string name="app_name">手机影音</string>
     <string name="splash">正在启动...</string>
+
+    <string name="Local_video">本地视频</string>
+    <string name="Local_music">本地音乐</string>
+    <string name="Network_video">网络视频</string>
+    <string name="Network_music">网络音乐</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

@@ -1,4 +1,4 @@
-package pers.cs.videoandaudio.Activity;
+package pers.cs.videoandaudio.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,7 +8,6 @@ import android.view.MotionEvent;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import pers.cs.videoandaudio.MainActivity;
 import pers.cs.videoandaudio.R;
 
 /**
