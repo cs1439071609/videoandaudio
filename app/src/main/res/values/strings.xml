@@ -6,6 +6,7 @@
     <string name="Local_music">本地音乐</string>
     <string name="Network_video">网络视频</string>
     <string name="Network_music">网络音乐</string>
+    <string name="search">搜索</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

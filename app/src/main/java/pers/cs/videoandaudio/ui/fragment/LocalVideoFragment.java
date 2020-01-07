@@ -30,7 +30,7 @@ public class LocalVideoFragment extends BaseFragment {
     protected View initView() {
         Log.d(TAG, "initView: " + "...");
         view = View.inflate(mContext, R.layout.fragment_local_video,null);
-        lv_local_video = view.findViewById(R.id.lv_local_video);
+//        lv_local_video = view.findViewById(R.id.lv_local_video);
 
         return view;
     }

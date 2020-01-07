@@ -1,14 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<pers.cs.videoandaudio.ui.View.TitleBar xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
-    android:gravity="center"
-    android:background="#11000000"
+    android:background="#ff3097fd"
+    android:gravity="center_vertical"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize">
 
-    <TextView
-        android:layout_gravity="center"
-        android:text="哈哈哈"
+    <ImageView
+        android:layout_marginLeft="10dp"
+        android:src="@drawable/ic_topbanner_logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
-</LinearLayout>
+
+    <TextView
+        android:clickable="true"
+        android:layout_marginLeft="5dp"
+        android:id="@+id/tv_search"
+        android:drawableLeft="@drawable/tv_search_drawable_seletor"
+        android:background="@drawable/tv_search_bg_seletor"
+        android:textColor="@drawable/tv_search_textcolor_seletor"
+        android:drawablePadding="5dp"
+        android:layout_weight="1"
+        android:text="@string/search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <RelativeLayout
+        android:id="@+id/rl_game"
+        android:layout_marginLeft="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <!--为什么不用ImageView-->
+        <TextView
+            android:id="@+id/tv_game"
+            android:drawableLeft="@drawable/ic_topbanner_game"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <ImageView
+            android:layout_alignRight="@id/tv_game"
+            android:src="@drawable/dot"
+            android:layout_width="6dp"
+            android:layout_height="6dp" />
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="10dp"
+        android:id="@+id/tv_history"
+        android:src="@drawable/ic_topbanner_record"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</pers.cs.videoandaudio.ui.View.TitleBar>

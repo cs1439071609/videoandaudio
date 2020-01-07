@@ -40,10 +40,9 @@ public class MainActivity extends AppCompatActivity {
 
 
         initView();
-
         initFragment();
-
         setListener();
+
 
     }
 
@@ -85,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
 
         private void switchFragment(Fragment from, BaseFragment to) {
 
+            //此处实际上from永远不能和to相等，因为只有点击的radioButton改变，才会执行此方法。
             if(from != to){
                 mCurrentFragment = to;
                 FragmentTransaction mFragmentTransaction = getSupportFragmentManager().beginTransaction();

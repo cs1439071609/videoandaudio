@@ -9,18 +9,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ui.activity.Main2Activity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:launchMode="singleTask"></activity>
         <activity android:name=".ui.activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <!--设置启动模式launchMode为单例模式，防止启动多次-->
-        <!--configChanges屏蔽横竖屏切换导致Activtiy生命周期重新执行-->
-        <activity android:name=".ui.activity.MainActivity"
-            android:launchMode="singleTask"
-            android:configChanges="orientation|screenSize|keyboardHidden"></activity>
+        </activity> <!-- 设置启动模式launchMode为单例模式，防止启动多次 -->
+        <!-- configChanges屏蔽横竖屏切换导致Activtiy生命周期重新执行 -->
+        <activity
+            android:name=".ui.activity.MainActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:launchMode="singleTask" />
     </application>
 
 </manifest>

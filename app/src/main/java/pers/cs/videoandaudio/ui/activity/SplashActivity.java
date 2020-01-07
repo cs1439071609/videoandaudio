@@ -43,12 +43,13 @@ public class SplashActivity extends AppCompatActivity {
         },2000);
     }
 
-    //不设置单例模式，让其启动一次
+    //不设置单例模式，让其启动一次,设置标志
     private boolean isStartMain = false;
     private void startMainActivity() {
 //        if(!isStartMain) {
 //            isStartMain = true;
-            Intent intent = new Intent(this, MainActivity.class);
+//            Intent intent = new Intent(this, MainActivity.class);
+            Intent intent = new Intent(this, Main2Activity.class);
 
             startActivity(intent);
 
