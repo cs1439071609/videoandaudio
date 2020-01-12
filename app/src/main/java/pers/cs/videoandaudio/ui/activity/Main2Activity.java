@@ -23,7 +23,7 @@ import pers.cs.videoandaudio.ui.fragment.ReplaceFragment;
  *
  * @time 2020/1/6  21:29
  *
- * @desc 框架2
+ * @desc 框架2 使用RadioGroup+Pager
  *
  */
 

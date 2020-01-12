@@ -48,8 +48,8 @@ public class SplashActivity extends AppCompatActivity {
     private void startMainActivity() {
 //        if(!isStartMain) {
 //            isStartMain = true;
-//            Intent intent = new Intent(this, MainActivity.class);
-            Intent intent = new Intent(this, Main2Activity.class);
+            Intent intent = new Intent(this, MainActivity.class);
+//            Intent intent = new Intent(this, Main2Activity.class);
 
             startActivity(intent);
 

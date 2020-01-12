@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="pers.cs.videoandaudio">
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/login_icon"
@@ -9,16 +12,22 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.activity.Main2Activity"
+        <activity
+            android:name=".ui.activity.SystemVideoPlayerActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
-            android:launchMode="singleTask"></activity>
+            android:screenOrientation="landscape"></activity>
+        <activity
+            android:name=".ui.activity.Main2Activity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:launchMode="singleTask" />
         <activity android:name=".ui.activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity> <!-- 设置启动模式launchMode为单例模式，防止启动多次 -->
+        </activity>
+        <!-- 从splash到main跳转，设置main启动模式launchMode为单例模式，并且将splash中消息移除。防止启动多次 -->
         <!-- configChanges屏蔽横竖屏切换导致Activtiy生命周期重新执行 -->
         <activity
             android:name=".ui.activity.MainActivity"

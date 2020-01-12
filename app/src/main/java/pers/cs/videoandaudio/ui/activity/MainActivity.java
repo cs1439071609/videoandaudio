@@ -20,7 +20,7 @@ import pers.cs.videoandaudio.ui.fragment.NetVideoFragment;
 /**
  * @author chensen
  * @time 2020/1/5  23:44
- * @desc
+ * @desc 框架1 使用RadioGroup+Fragment
  */
 
 
