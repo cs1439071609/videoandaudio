@@ -30,7 +30,7 @@ import pers.cs.videoandaudio.R;
 import pers.cs.videoandaudio.adapter.LocalVideoFragmentAdapter;
 import pers.cs.videoandaudio.base.BaseFragment;
 import pers.cs.videoandaudio.bean.VideoItem;
-import pers.cs.videoandaudio.ui.activity.SystemVideoPlayerActivity;
+import pers.cs.videoandaudio.ui.activity.VitamioVideoPlayerActivity;
 
 /**
  * @author chensen
@@ -89,32 +89,34 @@ public class LocalVideoFragment extends BaseFragment {
 
             VideoItem videoItem = mVideoItems.get(position);
 
-//            调用系统所有播放器-隐示意图
-//            startSystemAll(videoItem.getData());
+            //            调用系统所有播放器-隐示意图
+            //            startSystemAll(videoItem.getData());
 
-//            调用自己的播放器-显示意图 -- 一个播放地址
-//            Intent intent = new Intent(mContext, SystemVideoPlayerActivity.class);
-//            intent.setDataAndType(Uri.parse(videoItem.getData()),"video/*");
-//            startActivity(intent);
+            //            调用自己的播放器-显示意图 -- 一个播放地址
+            //            Intent intent = new Intent(mContext, SystemVideoPlayerActivity.class);
+            //            intent.setDataAndType(Uri.parse(videoItem.getData()),"video/*");
+            //            startActivity(intent);
 
             //传递列表数据--对象，序列化
-            Intent intent = new Intent(mContext, SystemVideoPlayerActivity.class);
+//            Intent intent = new Intent(mContext, SystemVideoPlayerActivity.class);
+            Intent intent = new Intent(mContext, VitamioVideoPlayerActivity.class);
             Bundle bundle = new Bundle();
             bundle.putSerializable("videolist", (Serializable) mVideoItems);
 
             intent.putExtras(bundle);
-            intent.putExtra("position",position);
+            intent.putExtra("position", position);
             startActivity(intent);
         }
     }
 
     /**
-     * 调用系统所有播放器
+     * 调用系统的播放器，Intent-filter与此相同的播放器也可被调
+     *
      * @param data
      */
     private void startSystemAll(String data) {
         Intent intent = new Intent();
-        intent.setDataAndType(Uri.parse(data),"video/*");
+        intent.setDataAndType(Uri.parse(data), "video/*");
         startActivity(intent);
     }
 
@@ -124,6 +126,18 @@ public class LocalVideoFragment extends BaseFragment {
         super.initData();
 
         getDataFromLocal();
+
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+
+        for (int i = 0; i < permissions.length; i++) {
+            Log.i("MainActivity", "申请的权限为：" + permissions[i] + ",申请结果：" + grantResults[i]);
+        }
 
 
     }
@@ -142,34 +156,12 @@ public class LocalVideoFragment extends BaseFragment {
     private void getDataFromLocal() {
 
         mVideoItems = new ArrayList<>();
-
+        isGrantExternalRW((Activity) mContext);
         new Thread() {
             @Override
             public void run() {
                 super.run();
-//                SystemClock.sleep(1000);
-                /*if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.READ_EXTERNAL_STORAGE)
-                        != PackageManager.PERMISSION_GRANTED) {
-
-                    // Should we show an explanation?
-                    if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) mContext,
-                            Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                        // Explain to the user why we need to read the contacts
-                    }
-
-                    ActivityCompat.requestPermissions((Activity) mContext, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},0
-                            );
-
-                    // MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE is an
-                    // app-defined int constant that should be quite unique
-
-                }*/
-
-//                isGrantExternalRW((Activity) mContext);
-
-
-
-
+                //SystemClock.sleep(1000);
                 //查询数据
                 ContentResolver resolver = mContext.getContentResolver();
                 Uri uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
@@ -197,6 +189,7 @@ public class LocalVideoFragment extends BaseFragment {
 
                 }
 
+
                 //发送消息
                 mHandler.sendEmptyMessage(0);
 
@@ -207,6 +200,12 @@ public class LocalVideoFragment extends BaseFragment {
     }
 
 
+    /**
+     * 如果版本大于6.0，需要动态获取权限
+     *
+     * @param activity
+     * @return
+     */
     public static boolean isGrantExternalRW(Activity activity) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && activity.checkSelfPermission(
                 Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
