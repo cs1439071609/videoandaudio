@@ -23,7 +23,8 @@
             android:name=".ui.activity.SystemVideoPlayerActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:label="@string/videoplayer_name"
-            android:screenOrientation="landscape">
+            android:screenOrientation="landscape"
+            android:theme="@style/noAnimation_Theme">
 
             <!-- 让其他软件可以调用当前播放器 -->
             <intent-filter>
@@ -85,7 +86,8 @@
         <activity
             android:name=".ui.activity.VitamioVideoPlayerActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
-            android:screenOrientation="landscape" />
+            android:screenOrientation="landscape"
+            android:theme="@style/noAnimation_Theme" />
     </application>
 
 </manifest>

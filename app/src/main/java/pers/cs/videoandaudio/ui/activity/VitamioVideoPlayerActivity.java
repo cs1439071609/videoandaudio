@@ -2,6 +2,7 @@ package pers.cs.videoandaudio.ui.activity;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.media.AudioManager;
@@ -26,8 +27,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
@@ -391,6 +394,9 @@ public class VitamioVideoPlayerActivity extends AppCompatActivity {
                 }
                 break;
             case R.id.btn_controller_switch:
+                
+                switchSystemPlayer();
+                
                 break;
             case R.id.btn_controller_exit:
                 finish();
@@ -417,6 +423,48 @@ public class VitamioVideoPlayerActivity extends AppCompatActivity {
         mHandler.removeMessages(HIDECONTROLLER);
         mHandler.sendEmptyMessageDelayed(HIDECONTROLLER, HIDECONTROLLERDELAY);
 
+    }
+
+    private void switchSystemPlayer() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("万能播放器提醒你");
+        builder.setMessage("当有花屏时可以切换到系统播放器");
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                startSystemVideoPlayer();
+            }
+        });
+        builder.setNegativeButton("取消",null);
+        builder.show();
+    }
+
+    private void startSystemVideoPlayer() {
+        Log.e(TAG, "startSystemVideoPlayer: "+"启动系统播放器");
+        if(video_view != null){
+            video_view.stopPlayback();
+        }
+        Intent intent = new Intent(this,SystemVideoPlayerActivity.class);
+
+        if(mItemList != null && mItemList.size() >0){
+            //传递视频列表
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("videolist", (Serializable) mItemList);
+
+            intent.putExtras(bundle);
+
+            //视频的列表中的某条位置
+            intent.putExtra("position",position);
+
+
+        }else if(uri != null){
+            intent.setData(uri);
+        }
+
+        startActivity(intent);
+
+        finish();
     }
 
     private void setFullScreenOrDefault() {
@@ -532,12 +580,26 @@ public class VitamioVideoPlayerActivity extends AppCompatActivity {
              * 3.播放的时候本地文件中间有空白。
              */
 
+            showErrorDialog();
             //播放异常，则停止播放，防止弹窗使界面阻塞
             video_view.stopPlayback();
             Toast.makeText(VitamioVideoPlayerActivity.this, "bobobo", Toast.LENGTH_SHORT).show();
             //返回true
             return true;
         }
+    }
+
+    private void showErrorDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("提示");
+        builder.setMessage("抱歉，无法播放该视频");
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+        builder.show();
     }
 
     class MyOnPreparedListener implements MediaPlayer.OnPreparedListener {
