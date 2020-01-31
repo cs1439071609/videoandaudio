@@ -1,5 +1,7 @@
 package pers.cs.videoandaudio.utils;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Formatter;
 import java.util.Locale;
 
@@ -37,4 +39,9 @@ public class TimeUtil {
         }
     }
 
+    public String getSystemTime() {
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        Calendar calendar = Calendar.getInstance();
+        return sdf.format(calendar.getTime());
+    }
 }

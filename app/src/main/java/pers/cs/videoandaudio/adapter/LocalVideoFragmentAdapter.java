@@ -8,8 +8,14 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
+
 import java.util.List;
 
+import io.vov.vitamio.ThumbnailUtils;
+import io.vov.vitamio.provider.MediaStore;
 import pers.cs.videoandaudio.R;
 import pers.cs.videoandaudio.bean.VideoItem;
 import pers.cs.videoandaudio.utils.TimeUtil;
@@ -74,6 +80,14 @@ public class LocalVideoFragmentAdapter extends BaseAdapter {
 
 //        Bitmap bm = ThumbnailUtils.createVideoThumbnail(cursor.getString(3), MediaStore.Video.Thumbnails.MINI_KIND);
 
+        RequestOptions options = new RequestOptions()
+                .placeholder(R.drawable.video_default)
+                .error(R.drawable.video_default)
+                .diskCacheStrategy(DiskCacheStrategy.ALL) ;
+
+        Glide.with(mContext).load(ThumbnailUtils.createVideoThumbnail(mContext,videoItem.getData(), MediaStore.Video.Thumbnails.MINI_KIND))
+                .apply(options)
+                .into(viewHolder.img_video_frame);
         return convertView;
     }
 

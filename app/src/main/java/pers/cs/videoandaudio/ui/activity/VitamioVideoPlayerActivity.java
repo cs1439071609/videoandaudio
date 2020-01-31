@@ -94,7 +94,7 @@ public class VitamioVideoPlayerActivity extends AppCompatActivity {
     private boolean isNetVideo;
 
     //是否使用系统监听缓冲
-    private boolean isUseSystemBuffer;
+    private boolean isUseSystemBuffer = true;
 
 
     //得到本地视频列表

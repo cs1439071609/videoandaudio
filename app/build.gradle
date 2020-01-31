@@ -35,6 +35,7 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.1'
     implementation 'com.jakewharton:butterknife:10.2.1'
     implementation project(path: ':vitamio')
-
-
+    implementation project(path: ':xutils')
+    implementation files('libs/glide-full-4.7.0.jar')
+    implementation 'com.squareup.picasso:picasso:2.71828'
 }

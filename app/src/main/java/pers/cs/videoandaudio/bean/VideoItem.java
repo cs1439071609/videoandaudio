@@ -15,8 +15,28 @@ public class VideoItem implements Serializable {
 
     private String time;
 
+    //地址
     private String data;
 
+    private String imageUrl;
+
+    private String desc;
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
 
     public VideoItem() {
     }
