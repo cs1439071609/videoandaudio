@@ -101,7 +101,7 @@ public class LocalVideoFragment extends BaseFragment {
             Intent intent = new Intent(mContext, SystemVideoPlayerActivity.class);
 //            Intent intent = new Intent(mContext, VitamioVideoPlayerActivity.class);
             Bundle bundle = new Bundle();
-            bundle.putSerializable("videolist", (Serializable) mVideoItems);
+            bundle.putSerializable("valist", (Serializable) mVideoItems);
 
             intent.putExtras(bundle);
             intent.putExtra("position", position);
@@ -164,7 +164,9 @@ public class LocalVideoFragment extends BaseFragment {
                 //SystemClock.sleep(1000);
                 //查询数据
                 ContentResolver resolver = mContext.getContentResolver();
+//                Uri uri = MediaStore.Video.Media.INTERNAL_CONTENT_URI;
                 Uri uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+
                 //注意：此处使用MediaStore.Video.VideoColumns而不是MediaStore.Video.Media
                 String keys[] = {
                         MediaStore.Video.VideoColumns.DISPLAY_NAME,
@@ -188,8 +190,24 @@ public class LocalVideoFragment extends BaseFragment {
                     cursor.close();
 
                 }
+                uri = MediaStore.Video.Media.INTERNAL_CONTENT_URI;
+                Cursor cursor1 = resolver.query(uri, keys, null, null, null);
+                if (cursor1 != null) {
 
+                    while (cursor1.moveToNext()) {
 
+                        VideoItem videoItem = new VideoItem(
+                                cursor1.getString(0),
+                                cursor1.getString(1),
+                                cursor1.getString(2),
+                                cursor1.getString(3));
+
+                        mVideoItems.add(videoItem);
+                    }
+
+                    cursor1.close();
+
+                }
                 //发送消息
                 mHandler.sendEmptyMessage(0);
 

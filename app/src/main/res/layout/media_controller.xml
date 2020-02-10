@@ -53,7 +53,7 @@
 
             <Button
                 android:id="@+id/btn_controller_voice"
-                android:background="@drawable/btn_voice_seletor"
+                android:background="@drawable/btn_voice_selector"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -68,7 +68,7 @@
                 android:layout_height="wrap_content" />
             <Button
                 android:id="@+id/btn_controller_switch"
-                android:background="@drawable/btn_switch_player_seletor"
+                android:background="@drawable/btn_switch_player_selector"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -130,7 +130,7 @@
 
             <Button
                 android:layout_weight="1"
-                android:background="@drawable/btn_video_pre_seletor"
+                android:background="@drawable/btn_video_pre_selector"
                 android:id="@+id/btn_controller_pre"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
@@ -139,21 +139,21 @@
             <Button
                 android:layout_weight="1"
                 android:id="@+id/btn_controller_pause"
-                android:background="@drawable/btn_video_pause_seletor"
+                android:background="@drawable/btn_video_pause_selector"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
             <Button
                 android:layout_weight="1"
                 android:id="@+id/btn_controller_next"
-                android:background="@drawable/btn_video_next_seletor"
+                android:background="@drawable/btn_video_next_selector"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <Button
                 android:layout_weight="1"
 
                 android:id="@+id/btn_controller_full"
-                android:background="@drawable/btn_video_screen_full_seletor"
+                android:background="@drawable/btn_video_screen_full_selector"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 

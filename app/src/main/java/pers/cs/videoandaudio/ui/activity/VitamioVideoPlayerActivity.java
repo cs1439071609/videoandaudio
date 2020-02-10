@@ -450,7 +450,7 @@ public class VitamioVideoPlayerActivity extends AppCompatActivity {
         if(mItemList != null && mItemList.size() >0){
             //传递视频列表
             Bundle bundle = new Bundle();
-            bundle.putSerializable("videolist", (Serializable) mItemList);
+            bundle.putSerializable("valist", (Serializable) mItemList);
 
             intent.putExtras(bundle);
 
@@ -479,11 +479,11 @@ public class VitamioVideoPlayerActivity extends AppCompatActivity {
         if (video_view.isPlaying()) {
             video_view.pause();
 
-            btnControllerPause.setBackgroundResource(R.drawable.btn_video_start_seletor);
+            btnControllerPause.setBackgroundResource(R.drawable.btn_video_start_selector);
         } else {
             video_view.start();
 
-            btnControllerPause.setBackgroundResource(R.drawable.btn_video_pause_seletor);
+            btnControllerPause.setBackgroundResource(R.drawable.btn_video_pause_selector);
 
         }
     }
@@ -543,7 +543,7 @@ public class VitamioVideoPlayerActivity extends AppCompatActivity {
     private void setButtonEnabled(boolean isPreEnabled, boolean isNextEnabled) {
 
         if (isPreEnabled) {
-            btnControllerPre.setBackgroundResource(R.drawable.btn_video_pre_seletor);
+            btnControllerPre.setBackgroundResource(R.drawable.btn_video_pre_selector);
             btnControllerPre.setEnabled(true);
         } else {
             btnControllerPre.setBackgroundResource(R.drawable.btn_pre_gray);
@@ -551,7 +551,7 @@ public class VitamioVideoPlayerActivity extends AppCompatActivity {
         }
 
         if (isNextEnabled) {
-            btnControllerNext.setBackgroundResource(R.drawable.btn_video_next_seletor);
+            btnControllerNext.setBackgroundResource(R.drawable.btn_video_next_selector);
             btnControllerNext.setEnabled(true);
         } else {
             btnControllerNext.setBackgroundResource(R.drawable.btn_next_gray);
@@ -643,7 +643,7 @@ public class VitamioVideoPlayerActivity extends AppCompatActivity {
                 //1.设置屏幕大小
                 video_view.setVideoSize(screenWidth, screenHeight);
                 //2.设置按钮状态
-                btnControllerFull.setBackgroundResource(R.drawable.btn_video_screen_default_seletor);
+                btnControllerFull.setBackgroundResource(R.drawable.btn_video_screen_default_selector);
 
                 isFullScreen = true;
                 break;
@@ -665,7 +665,7 @@ public class VitamioVideoPlayerActivity extends AppCompatActivity {
                 }
 
                 video_view.setVideoSize(width, height);
-                btnControllerFull.setBackgroundResource(R.drawable.btn_video_screen_full_seletor);
+                btnControllerFull.setBackgroundResource(R.drawable.btn_video_screen_full_selector);
                 isFullScreen = false;
                 break;
         }
@@ -677,7 +677,7 @@ public class VitamioVideoPlayerActivity extends AppCompatActivity {
         uri = getIntent().getData();
 
         //获取软件列表和位置
-        mItemList = (List<VideoItem>) getIntent().getSerializableExtra("videolist");
+        mItemList = (List<VideoItem>) getIntent().getSerializableExtra("valist");
         position = getIntent().getIntExtra("position", 0);
 
         isNetVideo = false;

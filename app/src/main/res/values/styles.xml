@@ -16,7 +16,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:button">@null</item>
         <item name="android:drawablePadding">3dp</item>
-        <item name="android:textColor">@drawable/rb_buttom_textcolor_seletor</item>
+        <item name="android:textColor">@drawable/rb_buttom_textcolor_selector</item>
         <item name="android:textSize">10sp</item>
     </style>
 

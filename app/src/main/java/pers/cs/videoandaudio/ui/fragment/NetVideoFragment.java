@@ -155,7 +155,7 @@ public class NetVideoFragment extends BaseFragment {
             Intent intent = new Intent(mContext, SystemVideoPlayerActivity.class);
             //            Intent intent = new Intent(mContext, VitamioVideoPlayerActivity.class);
             Bundle bundle = new Bundle();
-            bundle.putSerializable("videolist", (Serializable) mItemList);
+            bundle.putSerializable("valist", (Serializable) mItemList);
 
             intent.putExtras(bundle);
             intent.putExtra("position", position-1);
@@ -179,7 +179,7 @@ public class NetVideoFragment extends BaseFragment {
 
     private void getDataFromNet() {
         //联网请求在子线程
-        RequestParams requestParams = new RequestParams(Constants.NET_URL);
+        RequestParams requestParams = new RequestParams("http://api.m.mtime.cn/PageSubArea/TrailerList.api");
         x.http().get(requestParams, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {

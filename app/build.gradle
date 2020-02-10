@@ -11,7 +11,13 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        //解决华为手机莫名崩溃。
+        ndk {
+            abiFilters "armeabi", "armeabi-v7a", "x86", "mips"
+        }
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -37,5 +43,7 @@ dependencies {
     implementation project(path: ':vitamio')
     implementation project(path: ':xutils')
     implementation files('libs/glide-full-4.7.0.jar')
+    //使用网络Picasso
     implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'org.greenrobot:eventbus:3.1.1'
 }

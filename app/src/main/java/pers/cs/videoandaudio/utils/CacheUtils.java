@@ -20,4 +20,12 @@ public class CacheUtils {
         return sharedPreferences.getString(key,"");
     }
 
+    public static void putInt(Context context,String key,int values){
+        SharedPreferences sharedPreferences = context.getSharedPreferences("videoandaudio",Context.MODE_PRIVATE);
+        sharedPreferences.edit().putInt(key,values).commit();
+    }
+    public static int getInt(Context context,String key,int defValue){
+        SharedPreferences sharedPreferences = context.getSharedPreferences("videoandaudio",Context.MODE_PRIVATE);
+        return sharedPreferences.getInt(key,defValue);
+    }
 }
