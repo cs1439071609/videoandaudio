@@ -40,10 +40,20 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.1'
     implementation 'com.jakewharton:butterknife:10.2.1'
+    //播放视频
     implementation project(path: ':vitamio')
+    //网络请求
     implementation project(path: ':xutils')
+    //加载图片
     implementation files('libs/glide-full-4.7.0.jar')
-    //使用网络Picasso
+    //使用Picasso加载图片
     implementation 'com.squareup.picasso:picasso:2.71828'
+    //发送消息
     implementation 'org.greenrobot:eventbus:3.1.1'
+    //播放视频
+    implementation 'cn.jzvd:jiaozivideoplayer:7.2.0'
+
+    implementation("com.squareup.okhttp3:okhttp:4.3.1")
+
+    implementation 'com.google.code.gson:gson:2.8.6'
 }

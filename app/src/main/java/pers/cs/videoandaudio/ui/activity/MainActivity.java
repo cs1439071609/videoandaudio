@@ -15,9 +15,9 @@ import java.util.List;
 
 import pers.cs.videoandaudio.R;
 import pers.cs.videoandaudio.base.BaseFragment;
+import pers.cs.videoandaudio.ui.fragment.CloudVillageFragment;
 import pers.cs.videoandaudio.ui.fragment.LocalMusicFragment;
 import pers.cs.videoandaudio.ui.fragment.LocalVideoFragment;
-import pers.cs.videoandaudio.ui.fragment.NetMusicFragment;
 import pers.cs.videoandaudio.ui.fragment.NetVideoFragment;
 
 /**
@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
         mFragments.add(new LocalVideoFragment());
         mFragments.add(new NetVideoFragment());
         mFragments.add(new LocalMusicFragment());
-        mFragments.add(new NetMusicFragment());
+        mFragments.add(new CloudVillageFragment());
     }
 
     private void initView() {

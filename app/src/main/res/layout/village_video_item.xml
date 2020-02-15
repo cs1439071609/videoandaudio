@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <include layout="@layout/village_user_info"/>
+
+        <include layout="@layout/village_video_middle"/>
+
+        <include layout="@layout/village_common_bottom"/>
+
+
+
+    </LinearLayout>
+
+    <View
+        android:background="#08000000"
+        android:layout_width="match_parent"
+        android:layout_height="8dp"/>
+</LinearLayout>

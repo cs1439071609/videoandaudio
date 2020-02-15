@@ -1,6 +1,7 @@
 package pers.cs.videoandaudio.utils;
 
 import android.content.Context;
+import android.util.DisplayMetrics;
 
 /**
  * @author chensen
@@ -19,4 +20,7 @@ public class DensityUtil {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (px / scale + 0.5f);
     }
+
+
+
 }

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tv_village_content"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="5dp"
+
+        android:text="这哪里是在斗牛！"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <cn.jzvd.JzvdStd
+            android:id="@+id/jzvdStd"
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            />
+
+        <TextView
+            android:background="#88000000"
+            android:textSize="14sp"
+            android:text="1000次播放"
+            android:textColor="@android:color/white"
+            android:layout_alignParentBottom="true"
+            android:id="@+id/tv_village_play_nums"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:background="#88000000"
+            android:textSize="14sp"
+            android:text="12:12"
+            android:textColor="@android:color/white"
+            android:layout_alignParentBottom="true"
+            android:id="@+id/tv_village_video_duration"
+            android:layout_alignParentRight="true"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+
+</LinearLayout>

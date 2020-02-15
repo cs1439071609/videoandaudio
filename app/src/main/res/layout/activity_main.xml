@@ -43,7 +43,7 @@
         <RadioButton
             android:id="@+id/rb_net_music"
             android:drawableTop="@drawable/rb_net_music_drawable_selector"
-            android:text="@string/Network_music"
+            android:text="云村"
             style="@style/bottom_tag_style"/>
 
     </RadioGroup>

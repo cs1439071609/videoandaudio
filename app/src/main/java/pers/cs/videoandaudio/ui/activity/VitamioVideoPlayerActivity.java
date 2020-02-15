@@ -11,6 +11,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Vibrator;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -831,7 +832,7 @@ public class VitamioVideoPlayerActivity extends AppCompatActivity {
 
 
     private float startX, startY;
-    private float stopY;
+    private float stopX,stopY;
     //滚动总距离-屏幕高
     private float touchRang;
     //滚动距离
@@ -856,24 +857,40 @@ public class VitamioVideoPlayerActivity extends AppCompatActivity {
                 mHandler.removeMessages(HIDECONTROLLER);
                 break;
             case MotionEvent.ACTION_MOVE:
-
+                stopX = event.getX();
                 stopY = event.getY();
                 distanceY = startY - stopY;
 
-                float change = distanceY / touchRang * maxVolume;
+                if(stopX > screenWidth/2){
+                    //改变声音
 
-                //音量应该大于0小于maxVolume
-                currentVolume = Math.min(maxVolume, Math.max(0, (int) (mScrollStartVolume + change)));
+                    float change = distanceY / touchRang * maxVolume;
 
-                if (change != 0) {
-                    mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, currentVolume, 0);
-                    seekbarVoice.setProgress(currentVolume);
-                }
+                    //音量应该大于0小于maxVolume
+                    currentVolume = Math.min(maxVolume, Math.max(0, (int) (mScrollStartVolume + change)));
 
-                if (currentVolume == 0) {
-                    isMute = true;
-                } else {
-                    isMute = false;
+                    if (change != 0) {
+                        mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, currentVolume, 0);
+                        seekbarVoice.setProgress(currentVolume);
+                    }
+
+                    if (currentVolume == 0) {
+                        isMute = true;
+                    } else {
+                        isMute = false;
+                    }
+                }else{
+                    //改变亮度
+
+                    final double FLING_MIN_DISTANCE = 0.5;
+                    final double FLING_MIN_VELOCITY = 0.5;
+                    if (distanceY > FLING_MIN_DISTANCE && Math.abs(distanceY) > FLING_MIN_VELOCITY) {
+                        setBrightness(10);
+                    }
+                    if (distanceY < FLING_MIN_DISTANCE && Math.abs(distanceY) > FLING_MIN_VELOCITY) {
+                        setBrightness(-10);
+                    }
+
                 }
                 break;
             case MotionEvent.ACTION_UP:
@@ -885,6 +902,36 @@ public class VitamioVideoPlayerActivity extends AppCompatActivity {
 
         return super.onTouchEvent(event);
     }
+    /**
+     * 设置屏幕亮度
+     * 0 最暗
+     * 1 最亮
+     */
+    public void setBrightness(float brightness) {
+        WindowManager.LayoutParams lp = getWindow().getAttributes();
+        lp.screenBrightness = lp.screenBrightness + brightness / 255.0f;
+        if (lp.screenBrightness > 1) {
+            lp.screenBrightness = 1;
+
+            //startVibrator();
+
+
+        } else if (lp.screenBrightness < 0.1) {
+            lp.screenBrightness = (float) 0.1;
+            //startVibrator();
+        }
+        getWindow().setAttributes(lp);
+
+        //        float sb = lp.screenBrightness;
+        //        brightnessTextView.setText((int) Math.ceil(sb * 100) + "%");
+    }
+
+    private void startVibrator() {
+        Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+        long[] pattern = { 10, 200 }; // OFF/ON/OFF/ON...
+        vibrator.vibrate(pattern, -1);
+    }
+
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {

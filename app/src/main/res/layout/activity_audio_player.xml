@@ -59,7 +59,7 @@
         <SeekBar
             android:id="@+id/seekbar_audio"
             android:progressDrawable="@drawable/audio_progress_horizontal"
-            android:thumb="@drawable/seek_thumb"
+            android:thumb="@drawable/seek_thumb1"
             android:minHeight="5dp"
             android:maxHeight="5dp"
             android:layout_width="match_parent"
