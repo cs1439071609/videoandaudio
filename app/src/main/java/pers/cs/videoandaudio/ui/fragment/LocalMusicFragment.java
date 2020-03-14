@@ -24,7 +24,7 @@ import pers.cs.videoandaudio.R;
 import pers.cs.videoandaudio.adapter.LocalAudioFragmentAdapter;
 import pers.cs.videoandaudio.base.BaseFragment;
 import pers.cs.videoandaudio.bean.AudioItem;
-import pers.cs.videoandaudio.ui.activity.AudioPlayerActivity;
+import pers.cs.videoandaudio.ui.activity.AudioPlayer1Activity;
 
 /**
  * @author chensen
@@ -47,6 +47,7 @@ public class LocalMusicFragment extends BaseFragment {
     private LocalAudioFragmentAdapter mLocalAudioFragmentAdapter;
     private List<AudioItem> mAudioItems;
 
+
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(@NonNull Message msg) {
@@ -57,6 +58,10 @@ public class LocalMusicFragment extends BaseFragment {
                 lv_local_video.setAdapter(mLocalAudioFragmentAdapter);
                 //隐藏文字
                 tv_local_video.setVisibility(View.GONE);
+
+
+
+
 
             } else {
                 tv_local_video.setVisibility(View.VISIBLE);
@@ -85,7 +90,9 @@ public class LocalMusicFragment extends BaseFragment {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-            Intent intent = new Intent(mContext, AudioPlayerActivity.class);
+//            Intent intent = new Intent(mContext, AudioPlayerActivity.class);
+            Intent intent = new Intent(mContext, AudioPlayer1Activity.class);
+            Log.d(TAG, "onItemClick: "+"chufa"+position);
             intent.putExtra("position", position);
             startActivity(intent);
 
@@ -100,6 +107,7 @@ public class LocalMusicFragment extends BaseFragment {
 
         getDataFromLocal();
     }
+
 
     private void getDataFromLocal() {
 
@@ -116,11 +124,13 @@ public class LocalMusicFragment extends BaseFragment {
                 Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
                 //注意：此处使用MediaStore.Video.VideoColumns而不是MediaStore.Video.Media
                 String keys[] = {
-                        MediaStore.Audio.AudioColumns.DISPLAY_NAME,
-                        MediaStore.Audio.AudioColumns.SIZE,
-                        MediaStore.Audio.AudioColumns.DURATION,
-                        MediaStore.Audio.AudioColumns.ARTIST,
-                        MediaStore.Audio.AudioColumns.DATA};//地址
+                        MediaStore.Audio.Media.DISPLAY_NAME,
+                        MediaStore.Audio.Media.SIZE,
+                        MediaStore.Audio.Media.DURATION,
+                        MediaStore.Audio.Media.ARTIST,
+                        MediaStore.Audio.Media.DATA,
+                        MediaStore.Audio.Media._ID,
+                        MediaStore.Audio.Media.ALBUM_ID};//地址
                 Cursor cursor = resolver.query(uri, keys, null, null, null);
                 if (cursor != null) {
 
@@ -132,6 +142,7 @@ public class LocalMusicFragment extends BaseFragment {
                                 cursor.getString(2),
                                 cursor.getString(4));
                         audioItem.setArtist(cursor.getString(3));
+
                         mAudioItems.add(audioItem);
                     }
 
@@ -163,4 +174,7 @@ public class LocalMusicFragment extends BaseFragment {
             }
         }.start();
     }
+
+
+
 }

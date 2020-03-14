@@ -1,5 +1,7 @@
 package pers.cs.videoandaudio.ui.activity;
 
+import android.app.NotificationManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.KeyEvent;
@@ -13,8 +15,11 @@ import androidx.fragment.app.FragmentTransaction;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.jzvd.Jzvd;
+import cn.jzvd.JzvdStd;
 import pers.cs.videoandaudio.R;
 import pers.cs.videoandaudio.base.BaseFragment;
+import pers.cs.videoandaudio.service.MusicPlayerService;
 import pers.cs.videoandaudio.ui.fragment.CloudVillageFragment;
 import pers.cs.videoandaudio.ui.fragment.LocalMusicFragment;
 import pers.cs.videoandaudio.ui.fragment.LocalVideoFragment;
@@ -34,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private List<BaseFragment> mFragments;
     private int position = 0;
     private Fragment mCurrentFragment;
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,6 +128,10 @@ public class MainActivity extends AppCompatActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
         if(keyCode == KeyEvent.KEYCODE_BACK){
+            //如果现在jzvd为全屏，先关闭
+            if (Jzvd.backPress()) {
+                return true;
+            }
             if(position != 0){
                 rg_bottom_tag.check(R.id.rb_local_video);
                 return true;
@@ -139,5 +149,55 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onKeyDown(keyCode, event);
+    }
+
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        JzvdStd.goOnPlayOnPause();
+//        Jzvd.releaseAllVideos();
+
+
+    }
+
+    @Override
+    protected void onDestroy() {
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        notificationManager.cancelAll();
+
+        stopService(new Intent(this, MusicPlayerService.class));
+        super.onDestroy();
+
+
+    }
+
+
+
+    public interface IStop{
+        public void stop();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //home back
+        JzvdStd.goOnPlayOnResume();
+    }
+
+
+
+    //onBackPressed方法和onKeyDown方法同时存在的时候，我们按back键，系统调用的是onKeyDown这个方法，
+    // 不会调用onBackPressed方法；
+    //当这两个方法任意存在一个的时候，存在的那个都会被调用。
+    @Override
+    public void onBackPressed() {
+        if (Jzvd.backPress()) {
+            return;
+        }
+        super.onBackPressed();
+
     }
 }

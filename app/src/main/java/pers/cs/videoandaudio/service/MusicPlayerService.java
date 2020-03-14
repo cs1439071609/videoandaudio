@@ -15,6 +15,7 @@ import android.os.Build;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.widget.Toast;
 
 import org.greenrobot.eventbus.EventBus;
@@ -22,16 +23,19 @@ import org.greenrobot.eventbus.EventBus;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import pers.cs.videoandaudio.IMusicPlayerService;
 import pers.cs.videoandaudio.R;
 import pers.cs.videoandaudio.bean.AudioItem;
-import pers.cs.videoandaudio.ui.activity.AudioPlayerActivity;
+import pers.cs.videoandaudio.ui.activity.AudioPlayer1Activity;
 import pers.cs.videoandaudio.utils.CacheUtils;
 
 public class MusicPlayerService extends Service {
 
     private static final String TAG = MusicPlayerService.class.getSimpleName();
+    private boolean DEBUG =  true;
+
 
     public static final String OPENMUSIC = "pers.cs.videoandaudio_OPENMUSIC";
     private NotificationManager notificationManager;
@@ -39,13 +43,18 @@ public class MusicPlayerService extends Service {
     private MediaPlayer mMediaPlayer;
 
     private List<AudioItem> mAudioItems;
-    private int position;
+
+    private int position = -1;
+
+
+
     private AudioItem mAudioItem;
 
 
     public static final int ORDER_NORMAL = 1;
     public static final int ORDER_SINGLE = 2;
     public static final int ORDER_ALL = 3;
+    public static final int ORDER_RANDOM = 4;
     private int playMode = ORDER_NORMAL;
 
 
@@ -67,6 +76,9 @@ public class MusicPlayerService extends Service {
 
         @Override
         public void openAudio(int position) throws RemoteException {
+
+//            positionS = position;
+//            Log.d(TAG, "openAudio: "+"hhh"+positionS);
             service.openAudio(position);
         }
 
@@ -140,6 +152,11 @@ public class MusicPlayerService extends Service {
         public void seekTo(int position) throws RemoteException {
             mMediaPlayer.seekTo(position);
         }
+
+        @Override
+        public int getPosition() throws RemoteException {
+            return position;
+        }
     };
 
     @Override
@@ -185,6 +202,9 @@ public class MusicPlayerService extends Service {
 
     private void openAudio(int position){
         this.position = position;
+        if(DEBUG){
+            Log.d(TAG, "openAudio: "+position);
+        }
 
         if(mAudioItems != null && mAudioItems.size() > 0){
             mAudioItem = mAudioItems.get(position);
@@ -238,6 +258,13 @@ public class MusicPlayerService extends Service {
                         position = 0;
                     }
                     break;
+                case ORDER_RANDOM:
+                    int n = new Random().nextInt(mAudioItems.size());
+                    while(n == position){
+                        n = new Random().nextInt(mAudioItems.size());
+                    }
+                    position = n;
+                    break;
                 default:
                     position++;
                     break;
@@ -289,7 +316,7 @@ public class MusicPlayerService extends Service {
             notificationManager.createNotificationChannel(notificationChannel);
         }
 
-        Intent intent = new Intent(this, AudioPlayerActivity.class);
+        Intent intent = new Intent(this, AudioPlayer1Activity.class);
         intent.putExtra("notification",true);
         PendingIntent pendingIntent = PendingIntent.getActivity(this,2,intent,PendingIntent.FLAG_UPDATE_CURRENT);
         //注意；此处用到channelId
@@ -355,6 +382,7 @@ public class MusicPlayerService extends Service {
                 break;
             case ORDER_SINGLE:
             case ORDER_ALL:
+            case ORDER_RANDOM:
                 openAudio(position);
                 break;
             default:
@@ -374,6 +402,7 @@ public class MusicPlayerService extends Service {
                 break;
             case ORDER_SINGLE:
             case ORDER_ALL:
+            case ORDER_RANDOM:
                 position++;
                 if(position >= mAudioItems.size()){
                     position = 0;
@@ -405,6 +434,7 @@ public class MusicPlayerService extends Service {
                 break;
             case ORDER_SINGLE:
             case ORDER_ALL:
+            case ORDER_RANDOM:
                 openAudio(position);
                 break;
             default:
@@ -424,6 +454,7 @@ public class MusicPlayerService extends Service {
                 break;
             case ORDER_SINGLE:
             case ORDER_ALL:
+            case ORDER_RANDOM:
                 position--;
                 if(position < 0){
                     position = mAudioItems.size() - 1;
@@ -454,4 +485,15 @@ public class MusicPlayerService extends Service {
         return mMediaPlayer.isPlaying();
     }
 
+    @Override
+    public void onDestroy() {
+        if(mMediaPlayer != null){
+
+            mMediaPlayer.stop();
+            mMediaPlayer.release();
+        }
+
+        super.onDestroy();
+
+    }
 }

@@ -4,6 +4,7 @@ package pers.cs.videoandaudio.ui.fragment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -16,6 +17,8 @@ import org.xutils.x;
 
 import java.util.List;
 
+import cn.jzvd.Jzvd;
+import cn.jzvd.JzvdStd;
 import pers.cs.videoandaudio.R;
 import pers.cs.videoandaudio.adapter.CloudVillageFragmentAdapter;
 import pers.cs.videoandaudio.base.BaseFragment;
@@ -38,11 +41,36 @@ public class CloudVillageFragment extends BaseFragment {
 
     @Override
     protected View initView() {
-        view = View.inflate(mContext, R.layout.fragment_cloud_village, null);
+        view = View.inflate(mContext,R.layout.fragment_cloud_village,null);
 //        x.view().inject(CloudVillageFragment.this,view);
         lv_village = view.findViewById(R.id.lv_village);
         tv_village = view.findViewById(R.id.tv_village);
         pb_village = view.findViewById(R.id.pb_village);
+
+        lv_village.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                //                Jzvd.onScrollReleaseAllVideos(view, firstVisibleItem, visibleItemCount, totalItemCount);
+
+                if (JzvdStd.CURRENT_JZVD == null) return;
+                int lastVisibleItem = firstVisibleItem + visibleItemCount;
+                int currentPlayPosition = Jzvd.CURRENT_JZVD.positionInList;
+                //                Log.e(TAG, "onScrollReleaseAllVideos: " +
+                //                        currentPlayPosition + " " + firstVisibleItem + " " + currentPlayPosition + " " + lastVisibleItem);
+                if (currentPlayPosition >= 0) {
+                    if ((currentPlayPosition < firstVisibleItem || currentPlayPosition > (lastVisibleItem - 1))) {
+                        if (JzvdStd.CURRENT_JZVD.screen != JzvdStd.SCREEN_FULLSCREEN) {
+                            JzvdStd.releaseAllVideos();//为什么最后一个视频横屏会调用这个，其他地方不会
+                        }
+                    }
+                }
+            }
+        });
 
         return view;
     }
@@ -111,5 +139,21 @@ public class CloudVillageFragment extends BaseFragment {
 
     private VillageBean parseJson(String json) {
         return new Gson().fromJson(json,VillageBean.class);
+    }
+
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        //hide、show变化重置
+        //Fragment切换时重置
+//        Jzvd.releaseAllVideos();
+        if(hidden){
+            JzvdStd.goOnPlayOnPause();
+        }else{
+            JzvdStd.goOnPlayOnResume();
+        }
+
+
     }
 }

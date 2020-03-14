@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/black"
-    tools:context=".ui.activity.SystemVideoPlayerActivity">
+    tools:context=".ui.activity.VitamioVideoPlayerActivity">
 
 
     <pers.cs.videoandaudio.ui.View.VideoViewVitamio
@@ -35,12 +35,7 @@
         android:id="@+id/media_volume"
         layout="@layout/custom_video_player_change_volume"/>
 
-    <include
-        android:id="@+id/media_buffer"
-        layout="@layout/media_buffer"
-        android:layout_centerInParent="true"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content" />
+
 
 
 </RelativeLayout>

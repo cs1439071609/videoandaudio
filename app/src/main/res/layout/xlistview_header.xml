@@ -14,7 +14,8 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:gravity="center"
-            android:orientation="vertical" android:id="@+id/xlistview_header_text">
+            android:orientation="vertical"
+            android:id="@+id/xlistview_header_text">
 
             <TextView
                 android:id="@+id/xlistview_header_hint_textview"

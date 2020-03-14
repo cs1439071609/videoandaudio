@@ -8,39 +8,45 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="bottom_tag_style">
-        <item name="android:layout_gravity">center_vertical</item>
-        <item name="android:gravity">center</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:button">@null</item>
-        <item name="android:drawablePadding">3dp</item>
-        <item name="android:textColor">@drawable/rb_buttom_textcolor_selector</item>
-        <item name="android:textSize">10sp</item>
+    <!-- 使用自定义ToolBar -->
+    <style name="AppTheme.NoActionBar">-->
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
+        <style name="bottom_tag_style">
+            <item name="android:layout_gravity">center_vertical</item>
+            <item name="android:gravity">center</item>
+            <item name="android:layout_weight">1</item>
+            <item name="android:layout_width">0dp</item>
+            <item name="android:layout_height">wrap_content</item>
+            <item name="android:button">@null</item>
+            <item name="android:drawablePadding">3dp</item>
+            <item name="android:textColor">@drawable/rb_buttom_textcolor_selector</item>
+            <item name="android:textSize">10sp</item>
+        </style>
 
-    <style name="noAnimation_Theme" parent="AppTheme">
-        <item name="android:windowAnimationStyle">@style/noAnimation</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowFullscreen">true</item>
-        <item name="android:windowContentOverlay">@null</item>
-    </style>
 
-    <style name="noAnimation">
-        <item name="android:activityOpenEnterAnimation">@null</item>
-        <item name="android:activityOpenExitAnimation">@null</item>
-        <item name="android:activityCloseEnterAnimation">@null</item>
-        <item name="android:activityCloseExitAnimation">@null</item>
-        <item name="android:taskOpenEnterAnimation">@null</item>
-        <item name="android:taskOpenExitAnimation">@null</item>
-        <item name="android:taskCloseEnterAnimation">@null</item>
-        <item name="android:taskCloseExitAnimation">@null</item>
-        <item name="android:taskToFrontEnterAnimation">@null</item>
-        <item name="android:taskToFrontExitAnimation">@null</item>
-        <item name="android:taskToBackEnterAnimation">@null</item>
-        <item name="android:taskToBackExitAnimation">@null</item>
+        <style name="noAnimation_Theme" parent="AppTheme">
+            <item name="android:windowAnimationStyle">@style/noAnimation</item>
+            <item name="android:windowNoTitle">true</item>
+            <item name="android:windowFullscreen">true</item>
+            <item name="android:windowContentOverlay">@null</item>
+        </style>
 
-    </style>
-</resources>
+        <style name="noAnimation">
+            <item name="android:activityOpenEnterAnimation">@null</item>
+            <item name="android:activityOpenExitAnimation">@null</item>
+            <item name="android:activityCloseEnterAnimation">@null</item>
+            <item name="android:activityCloseExitAnimation">@null</item>
+            <item name="android:taskOpenEnterAnimation">@null</item>
+            <item name="android:taskOpenExitAnimation">@null</item>
+            <item name="android:taskCloseEnterAnimation">@null</item>
+            <item name="android:taskCloseExitAnimation">@null</item>
+            <item name="android:taskToFrontEnterAnimation">@null</item>
+            <item name="android:taskToFrontExitAnimation">@null</item>
+            <item name="android:taskToBackEnterAnimation">@null</item>
+            <item name="android:taskToBackExitAnimation">@null</item>
+
+        </style>
+    </resources>

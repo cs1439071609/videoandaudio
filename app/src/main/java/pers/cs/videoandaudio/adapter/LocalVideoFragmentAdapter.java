@@ -8,16 +8,11 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.RequestOptions;
-
 import java.util.List;
 
-import io.vov.vitamio.ThumbnailUtils;
-import io.vov.vitamio.provider.MediaStore;
 import pers.cs.videoandaudio.R;
 import pers.cs.videoandaudio.bean.VideoItem;
+import pers.cs.videoandaudio.utils.MyVideoThumbLoader;
 import pers.cs.videoandaudio.utils.TimeUtil;
 
 /**
@@ -30,6 +25,7 @@ import pers.cs.videoandaudio.utils.TimeUtil;
  */
 public class LocalVideoFragmentAdapter extends BaseAdapter {
 
+    private MyVideoThumbLoader mVideoThumbLoader;
     private Context mContext;
     private List<VideoItem> mVideoItems;
     private TimeUtil mTimeUtil;
@@ -38,6 +34,7 @@ public class LocalVideoFragmentAdapter extends BaseAdapter {
         mContext = context;
         mVideoItems = videoItems;
         mTimeUtil = new TimeUtil();
+        mVideoThumbLoader = new MyVideoThumbLoader(mContext);
     }
 
     @Override
@@ -57,7 +54,7 @@ public class LocalVideoFragmentAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
+        VideoItem videoItem = mVideoItems.get(position);
         ViewHolder viewHolder;
         if(convertView == null){
             viewHolder = new ViewHolder();
@@ -68,26 +65,26 @@ public class LocalVideoFragmentAdapter extends BaseAdapter {
             viewHolder.tv_video_time = convertView.findViewById(R.id.tv_video_time);
             viewHolder.tv_video_size = convertView.findViewById(R.id.tv_video_size);
             convertView.setTag(viewHolder);
+            viewHolder.img_video_frame.setTag(videoItem.getData());
         }else{
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
         //注意：只有findviewbyid在里边，此在外边
-        VideoItem videoItem = mVideoItems.get(position);
+
         viewHolder.tv_video_name.setText(videoItem.getSimpleName());
         viewHolder.tv_video_time.setText(mTimeUtil.formatTime(Integer.parseInt(videoItem.getTime())));
         viewHolder.tv_video_size.setText(Formatter.formatFileSize(mContext,Integer.parseInt(videoItem.getSize())));
+        mVideoThumbLoader.showThumbByAsynctask(videoItem.getData(), viewHolder.img_video_frame);
 
-//        Bitmap bm = ThumbnailUtils.createVideoThumbnail(cursor.getString(3), MediaStore.Video.Thumbnails.MINI_KIND);
 
-        RequestOptions options = new RequestOptions()
+        /*RequestOptions options = new RequestOptions()
                 .placeholder(R.drawable.video_default)
                 .error(R.drawable.video_default)
                 .diskCacheStrategy(DiskCacheStrategy.ALL) ;
-
         Glide.with(mContext).load(ThumbnailUtils.createVideoThumbnail(mContext,videoItem.getData(), MediaStore.Video.Thumbnails.MINI_KIND))
                 .apply(options)
-                .into(viewHolder.img_video_frame);
+                .into(viewHolder.img_video_frame);*/
         return convertView;
     }
 

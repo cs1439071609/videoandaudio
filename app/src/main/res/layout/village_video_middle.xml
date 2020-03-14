@@ -18,11 +18,17 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <cn.jzvd.JzvdStd
-            android:id="@+id/jzvdStd"
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="220dp"
-            />
+            android:layout_height="200dp">
+            <cn.jzvd.JzvdStd
+                android:id="@+id/jzvdStd"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
+        </LinearLayout>
+
 
         <TextView
             android:background="#88000000"

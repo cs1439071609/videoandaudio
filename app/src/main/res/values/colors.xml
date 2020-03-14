@@ -7,4 +7,6 @@
     <color name="tab_checked_no">#363636</color>
     <color name="tab_checked">#3097FD</color>
 
+    <color name="white_text">#fafafa</color>
+
 </resources>

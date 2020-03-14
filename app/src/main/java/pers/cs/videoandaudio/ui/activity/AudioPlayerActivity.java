@@ -24,8 +24,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.util.List;
@@ -71,6 +69,7 @@ public class AudioPlayerActivity extends AppCompatActivity {
     ImageView imgAudioIcon;
     private ImageView img_icon;
     private LyricsTextView lyricsTextView;
+
 
     private String TAG = AudioPlayerActivity.class.getSimpleName();
 
@@ -198,6 +197,7 @@ public class AudioPlayerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_audio_player);
         ButterKnife.bind(this);
 
+
         initView();
         initEvent();
         playAnim();
@@ -267,14 +267,16 @@ public class AudioPlayerActivity extends AppCompatActivity {
         */
     }
 
+
+    //让AudioPlayer1Activity接受
     //EventBus接收消息方法
-    @Subscribe(threadMode = ThreadMode.MAIN)
+   /* @Subscribe(threadMode = ThreadMode.MAIN)
     public void onGetMessage(String msg){
         Log.e(TAG, "onGetMessage: ");
         showLyrics();
         updateUI();
         showStartOrPause();
-    }
+    }*/
 
 
     class MyReceiver extends BroadcastReceiver {

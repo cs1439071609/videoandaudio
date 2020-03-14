@@ -30,7 +30,7 @@ import pers.cs.videoandaudio.R;
 import pers.cs.videoandaudio.adapter.LocalVideoFragmentAdapter;
 import pers.cs.videoandaudio.base.BaseFragment;
 import pers.cs.videoandaudio.bean.VideoItem;
-import pers.cs.videoandaudio.ui.activity.SystemVideoPlayerActivity;
+import pers.cs.videoandaudio.ui.activity.VitamioVideoPlayerActivity;
 
 /**
  * @author chensen
@@ -98,8 +98,8 @@ public class LocalVideoFragment extends BaseFragment {
             //            startActivity(intent);
 
             //传递列表数据--对象，序列化
-            Intent intent = new Intent(mContext, SystemVideoPlayerActivity.class);
-//            Intent intent = new Intent(mContext, VitamioVideoPlayerActivity.class);
+//            Intent intent = new Intent(mContext, SystemVideoPlayerActivity.class);
+            Intent intent = new Intent(mContext, VitamioVideoPlayerActivity.class);
             Bundle bundle = new Bundle();
             bundle.putSerializable("valist", (Serializable) mVideoItems);
 
@@ -169,10 +169,10 @@ public class LocalVideoFragment extends BaseFragment {
 
                 //注意：此处使用MediaStore.Video.VideoColumns而不是MediaStore.Video.Media
                 String keys[] = {
-                        MediaStore.Video.VideoColumns.DISPLAY_NAME,
-                        MediaStore.Video.VideoColumns.SIZE,
-                        MediaStore.Video.VideoColumns.DURATION,
-                        MediaStore.Video.VideoColumns.DATA};//地址
+                        MediaStore.Video.Media.DISPLAY_NAME,
+                        MediaStore.Video.Media.SIZE,
+                        MediaStore.Video.Media.DURATION,
+                        MediaStore.Video.Media.DATA};//地址
                 Cursor cursor = resolver.query(uri, keys, null, null, null);
                 if (cursor != null) {
 

@@ -24,7 +24,6 @@ import org.xutils.common.util.DensityUtil;
 
 import java.util.List;
 
-import cn.jzvd.Jzvd;
 import cn.jzvd.JzvdStd;
 import pers.cs.videoandaudio.R;
 import pers.cs.videoandaudio.bean.VillageBean;
@@ -93,7 +92,7 @@ public class CloudVillageFragmentAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        return villageItems.get(position);
+        return null;
     }
 
     @Override
@@ -140,6 +139,7 @@ public class CloudVillageFragmentAdapter extends BaseAdapter {
                 viewHolder.tv_village_play_nums = convertView.findViewById(R.id.tv_village_play_nums);
                 viewHolder.tv_village_video_duration = convertView.findViewById(R.id.tv_village_video_duration);
                 viewHolder.tv_village_content = convertView.findViewById(R.id.tv_village_content);
+
                 break;
             case TYPE_IMAGE:
                 convertView = View.inflate(context, R.layout.village_image_item,null);
@@ -200,12 +200,13 @@ public class CloudVillageFragmentAdapter extends BaseAdapter {
 
                 if(videoBean != null){
                     if(videoBean.getVideo() != null && videoBean.getVideo().size() > 0){
-                        viewHolder.jzvdStd.setUp(videoBean.getVideo().get(0),"", Jzvd.SCREEN_NORMAL);
+                        viewHolder.jzvdStd.setUp(videoBean.getVideo().get(0),"", JzvdStd.SCREEN_NORMAL);
                         Glide.with(context).load(videoBean.getThumbnail_link().get(0)).into(viewHolder.jzvdStd.thumbImageView);
                     }
                 }
                 viewHolder.tv_village_play_nums.setText("" + videoBean.getPlaycount() + "次播放");
                 viewHolder.tv_village_video_duration.setText("" + timeUtil.formatTime(videoBean.getDuration()*1000));
+                viewHolder.jzvdStd.positionInList = position;
 
 
                 break;

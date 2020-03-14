@@ -26,7 +26,7 @@ import pers.cs.videoandaudio.adapter.NetVideoFragmentAdapter;
 import pers.cs.videoandaudio.base.BaseFragment;
 import pers.cs.videoandaudio.bean.VideoItem;
 import pers.cs.videoandaudio.ui.View.XListView;
-import pers.cs.videoandaudio.ui.activity.SystemVideoPlayerActivity;
+import pers.cs.videoandaudio.ui.activity.VitamioVideoPlayerActivity;
 import pers.cs.videoandaudio.utils.CacheUtils;
 import pers.cs.videoandaudio.utils.Constants;
 import pers.cs.videoandaudio.utils.TimeUtil;
@@ -152,8 +152,8 @@ public class NetVideoFragment extends BaseFragment {
             //            startActivity(intent);
 
             //传递列表数据--对象，序列化
-            Intent intent = new Intent(mContext, SystemVideoPlayerActivity.class);
-            //            Intent intent = new Intent(mContext, VitamioVideoPlayerActivity.class);
+//            Intent intent = new Intent(mContext, SystemVideoPlayerActivity.class);
+                        Intent intent = new Intent(mContext, VitamioVideoPlayerActivity.class);
             Bundle bundle = new Bundle();
             bundle.putSerializable("valist", (Serializable) mItemList);
 

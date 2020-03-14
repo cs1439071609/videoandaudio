@@ -21,10 +21,12 @@ import android.widget.TextView;
 import pers.cs.videoandaudio.R;
 
 public class XListViewHeader extends LinearLayout {
+
 	private LinearLayout mContainer;
 	private ImageView mArrowImageView;
 	private ProgressBar mProgressBar;
 	private TextView mHintTextView;
+
 	private int mState = STATE_NORMAL;
 
 	private Animation mRotateUpAnim;

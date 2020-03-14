@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Vibrator;
+import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -19,10 +20,9 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
+import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -57,35 +57,52 @@ public class VitamioVideoPlayerActivity extends AppCompatActivity {
     ImageView imgControllerBattery;
     @BindView(R.id.tv_controller_system_time)
     TextView tvControllerSystemTime;
+
+    //音量
     @BindView(R.id.btn_controller_voice)
-    Button btnControllerVoice;
-    @BindView(R.id.seekbar_voice)
-    SeekBar seekbarVoice;
+    ImageView btnControllerVoice;
+    @BindView(R.id.change_volume_progress)
+    ProgressBar pbVoice;
+
+    @BindView(R.id.change_brightness_progress)
+    ProgressBar pbBrightness;
+
     @BindView(R.id.btn_controller_switch)
-    Button btnControllerSwitch;
+    ImageView btnControllerSwitch;
+
     @BindView(R.id.tv_controller_current)
     TextView tvControllerCurrent;
     @BindView(R.id.seekbar_video)
     SeekBar seekbarVideo;
     @BindView(R.id.tv_controller_time)
     TextView tvControllerTime;
+
+
+    //image退出
     @BindView(R.id.btn_controller_exit)
-    Button btnControllerExit;
+    ImageView btnControllerExit;
     @BindView(R.id.btn_controller_pre)
-    Button btnControllerPre;
+    ImageView btnControllerPre;
     @BindView(R.id.btn_controller_pause)
-    Button btnControllerPause;
+    ImageView btnControllerPause;
     @BindView(R.id.btn_controller_next)
-    Button btnControllerNext;
+    ImageView btnControllerNext;
     @BindView(R.id.btn_controller_full)
-    Button btnControllerFull;
+    ImageView btnControllerFull;
 
     private VideoViewVitamio video_view;
-    private RelativeLayout media_controller;
+
+    private LinearLayout media_controller1;
+    private LinearLayout media_controller2;
+
+    private LinearLayout media_brightness;
+    private LinearLayout media_volume;
+
     private LinearLayout media_buffer;
     private TextView tv_media_buffer;
-    private LinearLayout media_loading;
-    private TextView tv_media_loading;
+    private ProgressBar pb_loading_qq;
+    private ProgressBar pb_loading_ring;
+
 
 
     private TimeUtil mTimeUtil;
@@ -95,7 +112,7 @@ public class VitamioVideoPlayerActivity extends AppCompatActivity {
     private boolean isNetVideo;
 
     //是否使用系统监听缓冲
-    private boolean isUseSystemBuffer = true;
+    private boolean isUseSystemBuffer = true ;
 
 
     //得到本地视频列表
@@ -113,7 +130,8 @@ public class VitamioVideoPlayerActivity extends AppCompatActivity {
     private static final int UPDATENETSPEED = 2;
     //更新网速延迟
     private static final int UPDATENETSPEEDDELAY = 2000;
-
+    //隐藏音量
+    private static final int HIDEVOLUME = 3;
 
 
 
@@ -160,7 +178,6 @@ public class VitamioVideoPlayerActivity extends AppCompatActivity {
                 case UPDATENETSPEED:
                     String speed = mNetUtil.getNetSpeed(VitamioVideoPlayerActivity.this);
                     tv_media_buffer.setText("缓冲中..." + speed);
-                    tv_media_loading.setText("玩命加载中..." + speed);
                     mHandler.removeMessages(UPDATENETSPEED);
                     mHandler.sendEmptyMessageDelayed(UPDATENETSPEED,UPDATENETSPEEDDELAY);
                     break;
@@ -191,6 +208,8 @@ public class VitamioVideoPlayerActivity extends AppCompatActivity {
                         if(video_view.isPlaying()){
                             if(currentPosition - prePosition < 500){
                                 media_buffer.setVisibility(View.VISIBLE);
+                                pb_loading_qq.setVisibility(View.GONE);
+                                pb_loading_ring.setVisibility(View.VISIBLE);
                                 Log.e(TAG, "handleMessage: "+"用户自定义缓冲");
                             }else{
                                 media_buffer.setVisibility(View.GONE);
@@ -219,13 +238,16 @@ public class VitamioVideoPlayerActivity extends AppCompatActivity {
                 case HIDECONTROLLER:
                     hideMediaController();
                     break;
+                case HIDEVOLUME:
+                    media_volume.setVisibility(View.GONE);
+                    break;
             }
         }
     };
 
 
     private String getSystemTime() {
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
         Calendar calendar = Calendar.getInstance();
         return sdf.format(calendar.getTime());
     }
@@ -257,11 +279,18 @@ public class VitamioVideoPlayerActivity extends AppCompatActivity {
 
     private void initView() {
         video_view = findViewById(R.id.videoview);
-        media_controller = findViewById(R.id.media_controller);
-        media_buffer = findViewById(R.id.media_buffer);
+
+        media_controller1 = findViewById(R.id.media_controller1);
+        media_controller2 = findViewById(R.id.media_controller2);
+        media_buffer = findViewById(R.id.media_loading);
         tv_media_buffer = findViewById(R.id.tv_media_buffer);
-        media_loading = findViewById(R.id.media_loading);
-        tv_media_loading = findViewById(R.id.tv_media_loading);
+        pb_loading_qq = findViewById(R.id.pb_loading_qq);
+        pb_loading_ring = findViewById(R.id.pb_loading_ring);
+
+        media_brightness = findViewById(R.id.media_brightness);
+        media_volume = findViewById(R.id.media_volume);
+
+
 
         hideMediaController();
 
@@ -282,7 +311,7 @@ public class VitamioVideoPlayerActivity extends AppCompatActivity {
 
         seekbarVideo.setOnSeekBarChangeListener(new VideoOnSeekBarChangeListener());
 
-        seekbarVoice.setOnSeekBarChangeListener(new VoiceOnSeekBarChangeListener());
+//        pbVoice.setOnSeekBarChangeListener(new VoiceOnSeekBarChangeListener());
 
         if(isUseSystemBuffer){
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
@@ -302,6 +331,9 @@ public class VitamioVideoPlayerActivity extends AppCompatActivity {
             switch (what){
                 case MediaPlayer.MEDIA_INFO_BUFFERING_START:
                     media_buffer.setVisibility(View.VISIBLE);
+                    pb_loading_qq.setVisibility(View.GONE);
+                    pb_loading_ring.setVisibility(View.VISIBLE);
+
                     Log.e(TAG, "onInfo: "+"系统");
                     break;
                 case MediaPlayer.MEDIA_INFO_BUFFERING_END:
@@ -374,26 +406,9 @@ public class VitamioVideoPlayerActivity extends AppCompatActivity {
         //video_view.setMediaController(new MediaController(this));
     }
 
-    @OnClick({R.id.btn_controller_voice, R.id.btn_controller_switch, R.id.btn_controller_exit, R.id.btn_controller_pre, R.id.btn_controller_pause, R.id.btn_controller_next, R.id.btn_controller_full})
+    @OnClick({R.id.btn_controller_switch, R.id.btn_controller_exit, R.id.btn_controller_pre, R.id.btn_controller_pause, R.id.btn_controller_next, R.id.btn_controller_full})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.btn_controller_voice:
-                isMute = !isMute;
-                //isMute为true，为静音
-                if (isMute) {
-                    //设置音量，seekbar更新
-                    Log.e(TAG, "onViewClicked: " + "静音");
-                    mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 0, 0);
-                    seekbarVoice.setProgress(0);
-                } else {
-                    Log.e(TAG, "onViewClicked: " + "no静音");
-                    if (currentVolume == 0) {
-                        currentVolume = 1;
-                    }
-                    mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, currentVolume, 0);
-                    seekbarVoice.setProgress(currentVolume);
-                }
-                break;
             case R.id.btn_controller_switch:
                 
                 switchSystemPlayer();
@@ -480,11 +495,11 @@ public class VitamioVideoPlayerActivity extends AppCompatActivity {
         if (video_view.isPlaying()) {
             video_view.pause();
 
-            btnControllerPause.setBackgroundResource(R.drawable.btn_video_start_selector);
+            btnControllerPause.setImageResource(R.drawable.ic_player_start);
         } else {
             video_view.start();
 
-            btnControllerPause.setBackgroundResource(R.drawable.btn_video_pause_selector);
+            btnControllerPause.setImageResource(R.drawable.ic_player_pause);
 
         }
     }
@@ -497,7 +512,9 @@ public class VitamioVideoPlayerActivity extends AppCompatActivity {
         if (mItemList != null && mItemList.size() > 0) {
             position--;
             if (position >= 0) {
-                media_loading.setVisibility(View.VISIBLE);
+                media_buffer.setVisibility(View.VISIBLE);
+                pb_loading_qq.setVisibility(View.VISIBLE);
+                pb_loading_ring.setVisibility(View.GONE);
 
                 VideoItem videoItem = mItemList.get(position);
                 tvControllerName.setText(videoItem.getName());
@@ -512,7 +529,9 @@ public class VitamioVideoPlayerActivity extends AppCompatActivity {
         if (mItemList != null && mItemList.size() > 0) {
             position++;
             if (position < mItemList.size()) {
-                media_loading.setVisibility(View.VISIBLE);
+                media_buffer.setVisibility(View.VISIBLE);
+                pb_loading_qq.setVisibility(View.VISIBLE);
+                pb_loading_ring.setVisibility(View.GONE);
 
                 VideoItem videoItem = mItemList.get(position);
                 tvControllerName.setText(videoItem.getName());
@@ -544,18 +563,16 @@ public class VitamioVideoPlayerActivity extends AppCompatActivity {
     private void setButtonEnabled(boolean isPreEnabled, boolean isNextEnabled) {
 
         if (isPreEnabled) {
-            btnControllerPre.setBackgroundResource(R.drawable.btn_video_pre_selector);
+            btnControllerPre.setBackgroundResource(R.drawable.ic_button_prev);
             btnControllerPre.setEnabled(true);
         } else {
-            btnControllerPre.setBackgroundResource(R.drawable.btn_pre_gray);
             btnControllerPre.setEnabled(false);
         }
 
         if (isNextEnabled) {
-            btnControllerNext.setBackgroundResource(R.drawable.btn_video_next_selector);
+            btnControllerNext.setBackgroundResource(R.drawable.ic_button_next);
             btnControllerNext.setEnabled(true);
         } else {
-            btnControllerNext.setBackgroundResource(R.drawable.btn_next_gray);
             btnControllerNext.setEnabled(false);
         }
     }
@@ -625,7 +642,7 @@ public class VitamioVideoPlayerActivity extends AppCompatActivity {
 
             setVideoType(SCREEN_DEFAULT);
 
-            media_loading.setVisibility(View.GONE);
+            media_buffer.setVisibility(View.GONE);
 
             //拖动完成的监听
 //            mp.setOnSeekCompleteListener(new MediaPlayer.OnSeekCompleteListener() {
@@ -644,7 +661,7 @@ public class VitamioVideoPlayerActivity extends AppCompatActivity {
                 //1.设置屏幕大小
                 video_view.setVideoSize(screenWidth, screenHeight);
                 //2.设置按钮状态
-                btnControllerFull.setBackgroundResource(R.drawable.btn_video_screen_default_selector);
+                btnControllerFull.setImageResource(R.drawable.ic_zoom_original);
 
                 isFullScreen = true;
                 break;
@@ -666,7 +683,7 @@ public class VitamioVideoPlayerActivity extends AppCompatActivity {
                 }
 
                 video_view.setVideoSize(width, height);
-                btnControllerFull.setBackgroundResource(R.drawable.btn_video_screen_full_selector);
+                btnControllerFull.setImageResource(R.drawable.ic_zoom_stretch);
                 isFullScreen = false;
                 break;
         }
@@ -702,22 +719,18 @@ public class VitamioVideoPlayerActivity extends AppCompatActivity {
 
     private void setBattery(int level) {
 
-        if (level <= 0) {
-            imgControllerBattery.setImageResource(R.drawable.ic_battery_0);
-        } else if (level <= 10) {
-            imgControllerBattery.setImageResource(R.drawable.ic_battery_10);
+        if (level <= 10) {
+            imgControllerBattery.setImageResource(R.drawable.battery_10);
         } else if (level <= 20) {
-            imgControllerBattery.setImageResource(R.drawable.ic_battery_20);
-        } else if (level <= 40) {
-            imgControllerBattery.setImageResource(R.drawable.ic_battery_40);
-        } else if (level <= 60) {
-            imgControllerBattery.setImageResource(R.drawable.ic_battery_60);
+            imgControllerBattery.setImageResource(R.drawable.battery_20);
+        } else if (level <= 50) {
+            imgControllerBattery.setImageResource(R.drawable.battery_50);
         } else if (level <= 80) {
-            imgControllerBattery.setImageResource(R.drawable.ic_battery_80);
+            imgControllerBattery.setImageResource(R.drawable.battery_80);
         } else if (level <= 100) {
-            imgControllerBattery.setImageResource(R.drawable.ic_battery_100);
+            imgControllerBattery.setImageResource(R.drawable.battery_100);
         } else {
-            imgControllerBattery.setImageResource(R.drawable.ic_battery_100);
+            imgControllerBattery.setImageResource(R.drawable.battery_100);
         }
 
     }
@@ -725,12 +738,15 @@ public class VitamioVideoPlayerActivity extends AppCompatActivity {
 
     private void showMediaController() {
 
-        media_controller.setVisibility(View.VISIBLE);
+        media_controller1.setVisibility(View.VISIBLE);
+        media_controller2.setVisibility(View.VISIBLE);
         isShowMediaController = true;
     }
 
     private void hideMediaController() {
-        media_controller.setVisibility(View.GONE);
+        media_controller1.setVisibility(View.GONE);
+        media_controller2.setVisibility(View.GONE);
+
         isShowMediaController = false;
     }
 
@@ -763,8 +779,8 @@ public class VitamioVideoPlayerActivity extends AppCompatActivity {
         mAudioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
         maxVolume = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
         currentVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
-        seekbarVoice.setMax(maxVolume);
-        seekbarVoice.setProgress(currentVolume);
+        pbVoice.setMax(maxVolume);
+        pbVoice.setProgress(currentVolume);
 
         getUri();
 
@@ -839,12 +855,17 @@ public class VitamioVideoPlayerActivity extends AppCompatActivity {
     private float distanceY;
     //滚动开始时的音量。不要用currentVolume，因为滚动过程中此音量不断变化
     private int mScrollStartVolume;
+    private static final int THRESHOLD = 10;
+    //滑动开始屏幕亮度
+    private float mGestureDownBrightness;
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         //将事件传递给手势识别器
         mGestureDetector.onTouchEvent(event);
 
+        stopX = event.getX();
+        stopY = event.getY();
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 startX = event.getX();
@@ -853,48 +874,63 @@ public class VitamioVideoPlayerActivity extends AppCompatActivity {
                 touchRang = Math.min(screenWidth, screenHeight);
                 //mScrollStartVolume = currentVolume;
                 mScrollStartVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
-
-                mHandler.removeMessages(HIDECONTROLLER);
+                mGestureDownBrightness = getWindow().getAttributes().screenBrightness;
+                if (mGestureDownBrightness == -1) {
+                    try {
+                        mGestureDownBrightness = Settings.System.getFloat(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS) / 255;
+                    } catch (Settings.SettingNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }
+                Log.e(TAG, "onTouchEvent: "+mGestureDownBrightness);
+//                mHandler.removeMessages(HIDECONTROLLER);
                 break;
             case MotionEvent.ACTION_MOVE:
-                stopX = event.getX();
-                stopY = event.getY();
+
                 distanceY = startY - stopY;
 
-                if(stopX > screenWidth/2){
-                    //改变声音
+                if(Math.abs(distanceY) >= THRESHOLD){
+                    if(stopX > screenWidth/2){
+                        //改变声音
+                        media_volume.setVisibility(View.VISIBLE);
 
-                    float change = distanceY / touchRang * maxVolume;
+                        float change = distanceY / touchRang * maxVolume;
 
-                    //音量应该大于0小于maxVolume
-                    currentVolume = Math.min(maxVolume, Math.max(0, (int) (mScrollStartVolume + change)));
+                        //音量应该大于0小于maxVolume
+                        currentVolume = Math.min(maxVolume, Math.max(0, (int) (mScrollStartVolume + change)));
 
-                    if (change != 0) {
-                        mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, currentVolume, 0);
-                        seekbarVoice.setProgress(currentVolume);
+                        if (change != 0) {
+                            mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, currentVolume, 0);
+                            pbVoice.setProgress(currentVolume);
+                        }
+
+                    }else{
+                        //改变亮度
+                        media_brightness.setVisibility(View.VISIBLE);
+
+                        float deltaY = distanceY;
+
+                        float deltaBrightness = deltaY * 3 / touchRang;
+                        float newBrightness = mGestureDownBrightness + deltaBrightness;
+                        newBrightness = Math.max(0, Math.min(newBrightness, 1));
+                        float newBrightnessPercentage = newBrightness;
+                        WindowManager.LayoutParams params = getWindow().getAttributes();
+                        params.screenBrightness = newBrightnessPercentage;
+                        getWindow().setAttributes(params);
+
+                        int newBrightnessProgress = (int) (100f * newBrightnessPercentage);
+                        pbBrightness.setProgress(newBrightnessProgress);
+                        Log.e(TAG, "onTouchEvent: "+newBrightnessProgress);
+
+
                     }
-
-                    if (currentVolume == 0) {
-                        isMute = true;
-                    } else {
-                        isMute = false;
-                    }
-                }else{
-                    //改变亮度
-
-                    final double FLING_MIN_DISTANCE = 0.5;
-                    final double FLING_MIN_VELOCITY = 0.5;
-                    if (distanceY > FLING_MIN_DISTANCE && Math.abs(distanceY) > FLING_MIN_VELOCITY) {
-                        setBrightness(10);
-                    }
-                    if (distanceY < FLING_MIN_DISTANCE && Math.abs(distanceY) > FLING_MIN_VELOCITY) {
-                        setBrightness(-10);
-                    }
-
                 }
+
                 break;
             case MotionEvent.ACTION_UP:
-                mHandler.sendEmptyMessageDelayed(HIDECONTROLLER, HIDECONTROLLERDELAY);
+                media_volume.setVisibility(View.GONE);
+                media_brightness.setVisibility(View.GONE);
+//                mHandler.sendEmptyMessageDelayed(HIDECONTROLLER, HIDECONTROLLERDELAY);
                 break;
 
         }
@@ -938,28 +974,31 @@ public class VitamioVideoPlayerActivity extends AppCompatActivity {
 
         //监听物理按键音量增减
         if(keyCode == KeyEvent.KEYCODE_VOLUME_DOWN){
+            media_volume.setVisibility(View.VISIBLE);
 
             currentVolume--;
             currentVolume = currentVolume > 0 ? currentVolume : 0;
             mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, currentVolume, 0);
-            seekbarVoice.setProgress(currentVolume);
+            pbVoice.setProgress(currentVolume);
             if (currentVolume == 0) {
                 isMute = true;
             } else {
                 isMute = false;
             }
 
-            mHandler.removeMessages(HIDECONTROLLER);
-            mHandler.sendEmptyMessageDelayed(HIDECONTROLLER,HIDECONTROLLERDELAY);
+            mHandler.removeMessages(HIDEVOLUME);
+            mHandler.sendEmptyMessageDelayed(HIDEVOLUME,HIDECONTROLLERDELAY);
             return true;
         }else if(keyCode == KeyEvent.KEYCODE_VOLUME_UP){
+            media_volume.setVisibility(View.VISIBLE);
+
             currentVolume++;
             currentVolume = currentVolume < maxVolume ? currentVolume : maxVolume;
             mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, currentVolume, 0);
-            seekbarVoice.setProgress(currentVolume);
+            pbVoice.setProgress(currentVolume);
 
-            mHandler.removeMessages(HIDECONTROLLER);
-            mHandler.sendEmptyMessageDelayed(HIDECONTROLLER,HIDECONTROLLERDELAY);
+            mHandler.removeMessages(HIDEVOLUME);
+            mHandler.sendEmptyMessageDelayed(HIDEVOLUME,HIDECONTROLLERDELAY);
             return true;
         }
 
