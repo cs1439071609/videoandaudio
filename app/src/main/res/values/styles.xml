@@ -49,4 +49,15 @@
             <item name="android:taskToBackExitAnimation">@null</item>
 
         </style>
+
+        <style name="tab_selected">
+            <item name="android:textStyle">bold</item>
+            <item name="android:textSize">16sp</item>
+            <item name="android:textColor">@android:color/black</item>
+        </style>
+        <style name="tab_selected_no">
+            <item name="android:textStyle">normal</item>
+            <item name="android:textSize">14sp</item>
+            <item name="android:textColor">@android:color/darker_gray</item>
+        </style>
     </resources>

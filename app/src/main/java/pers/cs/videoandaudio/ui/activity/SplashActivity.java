@@ -25,9 +25,12 @@ import pers.cs.videoandaudio.utils.PermissionHelper;
 
 public class SplashActivity extends AppCompatActivity {
 
-    private static final String TAG = SplashActivity.class.getSimpleName();
-    private Handler handler = new Handler();
 
+    private static final boolean DEBUG = true;
+    private static final String TAG = SplashActivity.class.getSimpleName();
+
+    private Handler handler = new Handler();
+    //权限类
     private PermissionHelper mPermissionHelper;
 
     @Override
@@ -66,15 +69,39 @@ public class SplashActivity extends AppCompatActivity {
 
 
     }
+
+    /**
+     * 用户选择允许或拒绝后回调
+     * @param requestCode
+     * @param permissions
+     * @param grantResults -1：拒绝 0：允许
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(DEBUG){
+            Log.d(TAG, "onRequestPermissionsResult: requestCode:" + requestCode);
+            //每次一个权限length为0
+            for (int i = 0; i < permissions.length; i++) {
+                Log.d(TAG, "onRequestPermissionsResult: permissions:" + permissions[i]);
+                Log.d(TAG, "onRequestPermissionsResult: grantResults:" + grantResults[i]);
+            }
+        }
         mPermissionHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
+    /**
+     * 从设置页面返回
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if(DEBUG){
+            Log.d(TAG, "onActivityResult: "+requestCode+"-"+resultCode);
+        }
         mPermissionHelper.onActivityResult(requestCode, resultCode, data);
     }
 
@@ -95,7 +122,8 @@ public class SplashActivity extends AppCompatActivity {
     private void startMainActivity() {
 //        if(!isStartMain) {
 //            isStartMain = true;
-            Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, Main3Activity.class);
+//            Intent intent = new Intent(this, MainActivity.class);
 //            Intent intent = new Intent(this, Main2Activity.class);
 
             startActivity(intent);

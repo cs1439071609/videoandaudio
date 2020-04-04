@@ -38,7 +38,7 @@ import androidx.core.content.ContextCompat;
  */
 public class PermissionHelper {
 
-    private static final String TAG = "PermissionHelper";
+    private static final String TAG = PermissionHelper.class.getSimpleName();
 
     /**
      * 小tips:这里的int数值不能太大，否则不会弹出请求权限提示，测试的时候,改到1000就不会弹出请求了
@@ -50,7 +50,7 @@ public class PermissionHelper {
     private final static int REQUEST_OPEN_APPLICATION_SETTINGS_CODE = 12345;
 
     /**
-     * 有米 Android SDK 所需要向用户申请的权限列表
+     * 所需要向用户申请的权限列表
      */
     private PermissionModel[] mPermissionModels = new PermissionModel[]{
             new PermissionModel("电话", Manifest.permission.READ_PHONE_STATE, "我们需要读取手机信息的权限来标识您的身份", READ_PHONE_STATE_CODE),
@@ -77,6 +77,7 @@ public class PermissionHelper {
         try {
             for (final PermissionModel model : mPermissionModels) {
                 if (PackageManager.PERMISSION_GRANTED != ContextCompat.checkSelfPermission(mActivity, model.permission)) {
+                    //未授权时请求授权
                     ActivityCompat.requestPermissions(mActivity, new String[]{model.permission}, model.requestCode);
                     return;
                 }
@@ -102,11 +103,11 @@ public class PermissionHelper {
             case WRITE_EXTERNAL_STORAGE_CODE:
                 // 如果用户不允许，我们视情况发起二次请求或者引导用户到应用页面手动打开
                 if (PackageManager.PERMISSION_GRANTED != grantResults[0]) {
-
                     // 二次请求，表现为：以前请求过这个权限，但是用户拒接了
                     // 在二次请求的时候，会有一个“不再提示的”checkbox
                     // 因此这里需要给用户解释一下我们为什么需要这个权限，否则用户可能会永久不在激活这个申请
                     // 方便用户理解我们为什么需要这个权限
+                    //shouldShowRequestPermissionRationale获取是否应该显示具有请求权限的UI界面。
                     if (ActivityCompat.shouldShowRequestPermissionRationale(mActivity, permissions[0])) {
                         AlertDialog.Builder builder =
                                 new AlertDialog.Builder(mActivity).setTitle("权限申请").setMessage(findPermissionExplain(permissions[0]))
@@ -162,6 +163,7 @@ public class PermissionHelper {
      * @param data
      */
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d(TAG, "onActivityResult: aaa");
         switch (requestCode) {
             case REQUEST_OPEN_APPLICATION_SETTINGS_CODE:
                 if (isAllRequestedPermissionGranted()) {
@@ -201,8 +203,8 @@ public class PermissionHelper {
                     new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + mActivity.getPackageName()));
             intent.addCategory(Intent.CATEGORY_DEFAULT);
 
-            // Android L 之后Activity的启动模式发生了一些变化
-            // 如果用了下面的 Intent.FLAG_ACTIVITY_NEW_TASK ，并且是 startActivityForResult
+            // Android L(5.0)之后Activity的启动模式发生了一些变化
+            // 如果用了下面的 Intent.FLAG_ACTIVITY_NEW_TASK，并且是 startActivityForResult
             // 那么会在打开新的activity的时候就会立即回调 onActivityResult
             // intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             mActivity.startActivityForResult(intent, requestCode);

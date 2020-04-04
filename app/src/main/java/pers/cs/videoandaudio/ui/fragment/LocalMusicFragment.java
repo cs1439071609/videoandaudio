@@ -121,6 +121,8 @@ public class LocalMusicFragment extends BaseFragment {
                 //查询数据
                 ContentResolver resolver = mContext.getContentResolver();
 //                Uri uri = MediaStore.Audio.Media.INTERNAL_CONTENT_URI;
+
+
                 Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
                 //注意：此处使用MediaStore.Video.VideoColumns而不是MediaStore.Video.Media
                 String keys[] = {
@@ -176,5 +178,9 @@ public class LocalMusicFragment extends BaseFragment {
     }
 
 
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy: ");
+    }
 }

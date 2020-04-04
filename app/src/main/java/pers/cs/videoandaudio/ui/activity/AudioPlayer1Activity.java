@@ -230,6 +230,7 @@ public class AudioPlayer1Activity extends AppCompatActivity {
         setContentView(R.layout.activity_audio_playing);
         ButterKnife.bind(this);
 
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
             setSupportActionBar(toolbar);

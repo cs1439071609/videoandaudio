@@ -9,6 +9,7 @@ import android.app.Service;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
@@ -56,6 +57,7 @@ public class MusicPlayerService extends Service {
     public static final int ORDER_ALL = 3;
     public static final int ORDER_RANDOM = 4;
     private int playMode = ORDER_NORMAL;
+    private AudioManager.OnAudioFocusChangeListener mAudioFocusChangeListener = null;
 
 
     @Override
@@ -67,6 +69,26 @@ public class MusicPlayerService extends Service {
 
         //加载音乐列表
         getDataFromLocal();
+        //Build.VERSION.SDK_INT表示当前SDK的版本，Build.VERSION_CODES.ECLAIR_MR1为SDK 7版本 ，
+        //因为AudioManager.OnAudioFocusChangeListener在SDK8版本开始才有。
+//        if(Build.VERSION.SDK_INT > Build.VERSION_CODES.ECLAIR_MR1){
+//            mAudioFocusChangeListener = new AudioManager.OnAudioFocusChangeListener() {
+//                @Override
+//                public void onAudioFocusChange(int focusChange) {
+//                    if(focusChange == AudioManager.AUDIOFOCUS_LOSS){
+//                        //失去焦点之后的操作
+//                        if(isPlaying()){
+//                            pause();
+//                        }
+//                    }else if(focusChange == AudioManager.AUDIOFOCUS_GAIN){
+//                        //获得焦点之后的操作
+//                    }
+//                }
+//            };
+//            AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+//            am.requestAudioFocus(mAudioFocusChangeListener, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK);
+//
+//        }
 
     }
 

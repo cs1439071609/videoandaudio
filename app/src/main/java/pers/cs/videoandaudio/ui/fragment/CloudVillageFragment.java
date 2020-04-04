@@ -142,6 +142,7 @@ public class CloudVillageFragment extends BaseFragment {
     }
 
 
+    //只有FragmentTransaction的show（）和hide（）方法才会调用onHiddenChanged（）方法
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
@@ -153,7 +154,17 @@ public class CloudVillageFragment extends BaseFragment {
         }else{
             JzvdStd.goOnPlayOnResume();
         }
-
-
     }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            JzvdStd.goOnPlayOnResume();
+        }else{
+            JzvdStd.goOnPlayOnPause();
+        }
+    }
+
+
 }

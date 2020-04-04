@@ -4,6 +4,7 @@ import android.app.NotificationManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -34,12 +35,16 @@ import pers.cs.videoandaudio.ui.fragment.NetVideoFragment;
 
 public class MainActivity extends AppCompatActivity {
 
+
+    private static final boolean DEBUG = true;
+    private static final String TAG = MainActivity.class.getSimpleName();
+
     private RadioGroup rg_bottom_tag;
 
     private List<BaseFragment> mFragments;
     private int position = 0;
     private Fragment mCurrentFragment;
-    private static final String TAG = MainActivity.class.getSimpleName();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -159,6 +164,9 @@ public class MainActivity extends AppCompatActivity {
         JzvdStd.goOnPlayOnPause();
 //        Jzvd.releaseAllVideos();
 
+        if(DEBUG){
+            Log.d(TAG, "onPause: ");
+        }
 
     }
 

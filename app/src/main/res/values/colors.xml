@@ -9,4 +9,6 @@
 
     <color name="white_text">#fafafa</color>
 
+
+    <color name="normalBackground">#fff2f4f5</color>
 </resources>

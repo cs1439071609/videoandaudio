@@ -156,7 +156,7 @@ public class LocalVideoFragment extends BaseFragment {
     private void getDataFromLocal() {
 
         mVideoItems = new ArrayList<>();
-        isGrantExternalRW((Activity) mContext);
+//        isGrantExternalRW((Activity) mContext);
         new Thread() {
             @Override
             public void run() {

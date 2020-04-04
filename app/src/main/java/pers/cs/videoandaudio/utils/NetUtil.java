@@ -1,6 +1,8 @@
 package pers.cs.videoandaudio.utils;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.TrafficStats;
 
 /**
@@ -59,5 +61,21 @@ public class NetUtil {
         result = String.valueOf(speed) + "." + String.valueOf(speed2) + " kb/s";
 
         return result;
+    }
+
+
+    /**
+     * 是否连接网络
+     * @param pContext
+     * @return
+     */
+    public static boolean isConnectInternet(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+
+        if (networkInfo != null) {
+            return networkInfo.isAvailable();
+        }
+        return false;
     }
 }
