@@ -35,6 +35,8 @@
         android:background="?android:attr/windowBackground"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:itemIconTint="@color/bottomnavigationview_selector"
+        app:itemTextColor="@color/bottomnavigationview_selector"
         app:menu="@menu/activity_main3_bnv">
     </com.google.android.material.bottomnavigation.BottomNavigationView>
 

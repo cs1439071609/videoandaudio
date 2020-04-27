@@ -14,15 +14,20 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 
 import pers.cs.videoandaudio.R;
 import pers.cs.videoandaudio.info.MusicInfo;
 import pers.cs.videoandaudio.utils.TimeUtil;
 
 /**
- * A simple {@link Fragment} subclass.
+ * @author chensen
+ *
+ * @time 2020/4/27  17:47
+ *
+ * @desc 音乐详细信息
+ *
  */
+
 public class MusicDetailFragment extends DialogFragment {
 
     private Context mContext;

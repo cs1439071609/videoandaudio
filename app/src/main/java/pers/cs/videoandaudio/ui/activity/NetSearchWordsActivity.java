@@ -205,7 +205,7 @@ public class NetSearchWordsActivity extends AppCompatActivity implements SearchW
     @Override
     public void onSearch(String str) {
         mSearchView.setQuery(str,true);
+//        mSearchView.setSubmitButtonEnabled(false);
     }
-
 
 }

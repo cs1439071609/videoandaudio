@@ -21,7 +21,6 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,8 +34,14 @@ import pers.cs.videoandaudio.bean.OverFlowItem;
 import pers.cs.videoandaudio.info.MusicInfo;
 
 /**
- * A simple {@link Fragment} subclass.
+ * @author chensen
+ *
+ * @time 2020/4/27  17:48
+ *
+ * @desc 音乐操作
+ *
  */
+
 public class MoreFragment extends DialogFragment {
 
     private static final String TAG = MoreFragment.class.getSimpleName();

@@ -109,6 +109,7 @@ public class MediaService extends Service {
     private static final int FOCUSCHANGE = 5;
     //网络音乐结束标记
     private static final int TRACK_ENDED = 1;
+    private static final int TRACK_LOCAL_ENDED = 2;
 
     //播放模式
     public static final int REPEAT_CURRENT = 1;
@@ -217,13 +218,13 @@ public class MediaService extends Service {
                 gotoNext(true);
             }
             if (!stop) {
-//                mPlayer.setDataSource(url);
-                startProxy();
-                String urlEn = url;
-                //进行缓存
-                //将链接先转为自己的，mediaplayer的setDataSource调用时转到MediaPlayerProxy
-                urlEn = mProxy.getProxyURL(urlEn);
-                mPlayer.setDataSource(urlEn);
+                mPlayer.setDataSource(url);
+//                startProxy();
+//                String urlEn = url;
+//                //进行缓存
+//                //将链接先转为自己的，mediaplayer的setDataSource调用时转到MediaPlayerProxy
+//                urlEn = mProxy.getProxyURL(urlEn);
+//                mPlayer.setDataSource(urlEn);
             }
 
             if (play && !stop) {
@@ -364,6 +365,15 @@ public class MediaService extends Service {
                         } else {
                             service.gotoNext(false);
                         }
+                        break;
+                    case TRACK_LOCAL_ENDED:
+                        service.setAndRecordPlayPos(service.mNextPlayPos);
+                        service.closeCursor();
+                        service.updateCursor(service.mPlaylist.get(service.mPlayPos).mId);
+                        service.setNextTrack();
+                        service.notifyChange(META_CHANGED);
+                        service.notifyChange(MUSIC_CHANGED);
+                        service.updateNotification();
                         break;
 
                 }
@@ -796,7 +806,6 @@ public class MediaService extends Service {
 //                    mHistory.remove(0);
 //                }
 //            }
-
             mPlayPos = nextPos;
         }
     }
@@ -1447,11 +1456,12 @@ public class MediaService extends Service {
             notifyChange(MUSIC_CHANGED);
             updateNotification();
             //
-            boolean shutdown = false;
+//            boolean shutdown = false;
 
             Log.d(TAG, "openCurrentAndMaybeNext: "+mPlaylistInfo.get(id).islocal);
-            //网络
+
             if (!mPlaylistInfo.get(id).islocal) {
+                //网络
                 if (mRequestUrl != null) {
                     mRequestUrl.stop();
                     mUrlHandler.removeCallbacks(mRequestUrl);
@@ -1460,12 +1470,12 @@ public class MediaService extends Service {
                 mUrlHandler.postDelayed(mRequestUrl, 70);
             }else{
                 //本地
-                shutdown = true;
+                mPlayer.setDataSource(mPlaylistInfo.get(id).getData());
             }
 
-            if(shutdown){
-
-            }
+//            if(shutdown){
+//
+//            }
 //            else if(openNext){
 //                setNextTrack();
 //            }
@@ -1488,7 +1498,8 @@ public class MediaService extends Service {
             final long id = mPlaylist.get(mNextPlayPos).mId;
             if (mPlaylistInfo.get(id) != null) {
                 if (mPlaylistInfo.get(id).islocal) {
-                    mPlayer.setNextDataSource(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI + "/" + id);
+//                    mPlayer.setNextDataSource(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI + "/" + id);
+                    mPlayer.setNextDataSource(mPlaylistInfo.get(id).getData());
                 } else {
                     mPlayer.setNextDataSource(null);
                 }
@@ -1657,6 +1668,7 @@ public class MediaService extends Service {
                     player.setDataSource(MyApplication.context, Uri.parse(path));
                     player.prepare();
                 } else {
+                    Log.d(TAG, "setNextDataSourceImpl: !!!!!!!!!");
                     player.setDataSource(path);
                     player.setOnPreparedListener(preparedNextListener);
                     player.prepare();
@@ -1709,11 +1721,14 @@ public class MediaService extends Service {
         @Override
         public void onCompletion(MediaPlayer mp) {
             if (mp == mCurrentMediaPlayer && mNextMediaPlayer != null) {
+                Log.d(TAG, "onCompletion: "+(mNextMediaPlayer != null));
                 mCurrentMediaPlayer.release();
                 mCurrentMediaPlayer = mNextMediaPlayer;
                 mNextMediaPath = null;
                 mNextMediaPlayer = null;
+                mHandler.sendEmptyMessage(TRACK_LOCAL_ENDED);
             }else{
+                Log.d(TAG, "onCompletion: "+(mNextMediaPlayer != null));
                 mHandler.sendEmptyMessage(TRACK_ENDED);
             }
         }

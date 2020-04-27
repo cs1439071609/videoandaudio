@@ -144,21 +144,26 @@ public class SearchTabPagerFragment extends BaseFragment {
                 super.onPostExecute(aBoolean);
                 if(aBoolean){
 
-                    View view = View.inflate(mContext,R.layout.fragment_search_tab_pager,null);
-                    TabLayout tabs = view.findViewById(R.id.tabs);
-                    ViewPager viewPager = view.findViewById(R.id.viewpager);
-                    if(viewPager != null){
-                        //https://blog.csdn.net/MoLiao2046/article/details/103899277
-                        MyViewPageAdapter myViewPageAdapter = new MyViewPageAdapter(getChildFragmentManager(),FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-                        myViewPageAdapter.addFragment(SearchMusicFragment.newInstance(songResults), "单曲");
-                        viewPager.setAdapter(myViewPageAdapter);
+                    try{
+                        View view = View.inflate(mContext,R.layout.fragment_search_tab_pager,null);
+                        TabLayout tabs = view.findViewById(R.id.tabs);
+                        ViewPager viewPager = view.findViewById(R.id.viewpager);
+                        if(viewPager != null){
+                            //https://blog.csdn.net/MoLiao2046/article/details/103899277
+                            MyViewPageAdapter myViewPageAdapter = new MyViewPageAdapter(getChildFragmentManager(),FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+                            myViewPageAdapter.addFragment(SearchMusicFragment.newInstance(songResults), "单曲");
+                            viewPager.setAdapter(myViewPageAdapter);
 
+                        }
+                        tabs.setupWithViewPager(viewPager);
+                        tabs.selectTab(tabs.getTabAt(page_number));
+
+                        fl_search_hot_word.removeAllViews();
+                        fl_search_hot_word.addView(view);
+                    }catch (Exception e){
+                        e.printStackTrace();
                     }
-                    tabs.setupWithViewPager(viewPager);
-                    tabs.selectTab(tabs.getTabAt(page_number));
 
-                    fl_search_hot_word.removeAllViews();
-                    fl_search_hot_word.addView(view);
                 }
             }
         }.execute();

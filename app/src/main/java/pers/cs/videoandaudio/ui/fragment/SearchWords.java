@@ -7,4 +7,5 @@ package pers.cs.videoandaudio.ui.fragment;
  */
 public interface SearchWords {
     void onSearch(String str);
+
 }

@@ -33,6 +33,7 @@ import pers.cs.videoandaudio.bean.Lyrics;
 import pers.cs.videoandaudio.service.MediaService;
 import pers.cs.videoandaudio.service.MusicPlayer;
 import pers.cs.videoandaudio.ui.View.LyricsTextView;
+import pers.cs.videoandaudio.ui.fragment.PlayQueueFragment;
 import pers.cs.videoandaudio.utils.LyricsUtils;
 import pers.cs.videoandaudio.utils.TimeUtil;
 
@@ -142,6 +143,11 @@ public class PlayingActivity extends BaseActivity {
         LyricsUtils lyricsUtils = new LyricsUtils();
         File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() +
                 "/csmusic/lrc/" + MusicPlayer.getCurrentAudioId());
+        String path = MusicPlayer.getPath();
+        Log.d(TAG, "findLyrics: "+path);
+        if(!file.exists() && path != null) {
+            file = new File(path.substring(0,path.lastIndexOf(".")) + ".lrc");
+        }
         lyricsList = lyricsUtils.readLyricFile(file);
         if (lyricsList != null && lyricsList.size() > 0) {
             lyricsTextView.setLyrics(lyricsList);
@@ -244,8 +250,8 @@ public class PlayingActivity extends BaseActivity {
                 MusicPlayer.next();
                 break;
             case R.id.playing_playlist:
-
-
+                PlayQueueFragment playQueueFragment = new PlayQueueFragment();
+                playQueueFragment.show(getSupportFragmentManager(), "playlistframent");
                 break;
             case R.id.rl_playing:
                 rl_playing.setVisibility(View.INVISIBLE);
@@ -298,14 +304,12 @@ public class PlayingActivity extends BaseActivity {
         super.updateTrack();
         Log.d(TAG, "updateTrack: "+MusicPlayer.getCurrentAudioId());
 
-        ab.setTitle(MusicPlayer.getTrackName());
-        ab.setSubtitle(MusicPlayer.getArtistName());
-        seekbarAudio.setProgress(0);
+        initView();
 //        lyricsTextView.setCurrentPosition(0);
 
         showPlayMode();
 
-        findLyrics();
+
         RequestOptions options = new RequestOptions()
                 .placeholder(R.drawable.placeholder_disk_play_program)
                 .error(R.drawable.placeholder_disk_play_program)

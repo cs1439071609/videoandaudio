@@ -190,7 +190,14 @@ public class MusicPlayer {
                 position = 0;
             }
             mService.open(infos, list, forceShuffle ? -1 : position);
-            //            mService.play();
+
+            boolean isLocal = false;
+            if(infos.get(list[0]) != null){
+                isLocal = infos.get(list[0]).islocal;
+            }
+            if(isLocal){
+                mService.play();
+            }
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -312,7 +319,14 @@ public class MusicPlayer {
 
         }
     }
-
+    public static void setQueuePosition(final int position) {
+        if (mService != null) {
+            try {
+                mService.setQueuePosition(position);
+            } catch (final RemoteException ignored) {
+            }
+        }
+    }
     /**
      * @return 当前播放队列的音乐id
      */

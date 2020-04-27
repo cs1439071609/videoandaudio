@@ -19,13 +19,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import pers.cs.videoandaudio.R;
 import pers.cs.videoandaudio.adapter.LocalAudioFragmentAdapter;
 import pers.cs.videoandaudio.base.BaseFragment;
 import pers.cs.videoandaudio.info.MusicInfo;
-import pers.cs.videoandaudio.ui.activity.AudioPlayer1Activity;
+import pers.cs.videoandaudio.service.MusicPlayer;
+import pers.cs.videoandaudio.ui.activity.PlayingActivity;
 import pers.cs.videoandaudio.utils.MusicUtils;
 
 /**
@@ -88,12 +90,12 @@ public class LocalMusicFragment extends BaseFragment {
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
 //            Intent intent = new Intent(mContext, AudioPlayerActivity.class);
-            Intent intent = new Intent(mContext, AudioPlayer1Activity.class);
-            Log.d(TAG, "onItemClick: "+"chufa"+position);
-            intent.putExtra("position", position);
-            startActivity(intent);
+//            Intent intent = new Intent(mContext, AudioPlayer1Activity.class);
+//            Log.d(TAG, "onItemClick: "+"chufa"+position);
+//            intent.putExtra("position", position);
+//            startActivity(intent);
 
-            /*HashMap<Long, MusicInfo> infos = new HashMap<Long, MusicInfo>();
+            HashMap<Long, MusicInfo> infos = new HashMap<Long, MusicInfo>();
             int len = mAudioItems.size();
             long[] list = new long[len];
             for (int i = 0; i < len; i++) {
@@ -103,7 +105,7 @@ public class LocalMusicFragment extends BaseFragment {
             }
             MusicPlayer.playAll(infos, list, position, false);
             Intent intent = new Intent(mContext, PlayingActivity.class);
-            startActivity(intent);*/
+            startActivity(intent);
         }
     }
 
