@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+
+    <LinearLayout
+        android:layout_toLeftOf="@id/img_music_option"
+        android:layout_marginLeft="7dp"
+        android:padding="6dp"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:text="被驯服的象"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="#ff333333"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tv_artist"
+            android:text="蔡健雅"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLength="20"
+            android:maxLines="1"
+            android:textColor="#ff888888"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <ImageView
+        android:layout_alignParentRight="true"
+        android:id="@+id/img_music_option"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true"
+        android:padding="15dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/list_icn_more" />
+    <!--<View-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:background="#55000000"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="1dp"/>-->
+</RelativeLayout>

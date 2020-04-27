@@ -37,7 +37,12 @@ public class LyricsUtils {
 
                 String line = "";
                 while ((line = bufferedReader.readLine()) != null){
-                    parseLyric(line);
+                    try{
+                        parseLyric(line);
+                    }catch (Exception e){
+                        return lyricsList;
+                    }
+
                 }
 
                 bufferedReader.close();

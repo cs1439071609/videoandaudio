@@ -13,11 +13,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 import pers.cs.videoandaudio.R;
 import pers.cs.videoandaudio.base.BaseFragment;
 import pers.cs.videoandaudio.net.MA;
+import pers.cs.videoandaudio.utils.DensityUtil;
 import pers.cs.videoandaudio.utils.NetUtil;
 import pers.cs.videoandaudio.utils.OkHttpUtil;
+import pers.cs.videoandaudio.widget.WidgetController;
 
 /**
  * @author chensen
@@ -46,6 +50,7 @@ public class SearchHotWordFragment extends BaseFragment implements View.OnClickL
     //搜索历史记录
     private RecyclerView recyclerView;
 
+    private ArrayList<TextView> views = new ArrayList<>();
 
     @Override
     protected View initView() {
@@ -71,6 +76,17 @@ public class SearchHotWordFragment extends BaseFragment implements View.OnClickL
                 if(NetUtil.isConnectInternet(mContext)){
                     isFromCache = false;
                 }
+                /**
+                 * "error_code": 22000,
+                 * "result": [
+                 * {
+                 * "strong": 1,
+                 * "word": "我们在一起",
+                 * "linktype": 1,
+                 * "linkurl": "674169896"
+                 * },
+                 * ……]
+                 */
                 JSONObject jsonObject = OkHttpUtil.getResposeJsonObject(MA.Search.hotWord(), mContext, isFromCache);
                 try {
                 //比较getJSONArray(String key) 和optJSONArray（）
@@ -107,9 +123,48 @@ public class SearchHotWordFragment extends BaseFragment implements View.OnClickL
                 recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
 
                 TextView text1 = (TextView) view.findViewById(R.id.text1);
+                TextView text2 = (TextView) view.findViewById(R.id.text2);
+                TextView text3 = (TextView) view.findViewById(R.id.text3);
+                TextView text4 = (TextView) view.findViewById(R.id.text4);
+                TextView text5 = (TextView) view.findViewById(R.id.text5);
+                TextView text6 = (TextView) view.findViewById(R.id.text6);
                 text1.setOnClickListener(SearchHotWordFragment.this);
+                text2.setOnClickListener(SearchHotWordFragment.this);
+                text3.setOnClickListener(SearchHotWordFragment.this);
+                text4.setOnClickListener(SearchHotWordFragment.this);
+                text5.setOnClickListener(SearchHotWordFragment.this);
+                text6.setOnClickListener(SearchHotWordFragment.this);
                 text1.setText(texts[0]);
-
+                text2.setText(texts[1]);
+                text3.setText(texts[2]);
+                text4.setText(texts[3]);
+                text5.setText(texts[4]);
+                text6.setText(texts[5]);
+                views.add(text1);
+                views.add(text2);
+                views.add(text3);
+                views.add(text4);
+                views.add(text5);
+                views.add(text6);
+                int w = mContext.getResources().getDisplayMetrics().widthPixels;
+                int xdistance = -1;
+                int ydistance = 0;
+                int distance = DensityUtil.dip2px(mContext, 16);
+                for (int i = 0; i < 6; i++) {
+                    if (xdistance == -1) {
+                        xdistance = 0;
+                        WidgetController.setLayout(views.get(i), xdistance, ydistance);
+                        continue;
+                    }
+                    xdistance += WidgetController.getWidth(views.get(i - 1)) + distance;
+                    if (xdistance + WidgetController.getWidth(views.get(i)) + distance > w) {
+                        xdistance = -1;
+                        ydistance += DensityUtil.dip2px(mContext, 50);
+                        i--;
+                        continue;
+                    }
+                    WidgetController.setLayout(views.get(i), xdistance, ydistance);
+                }
                 fl_search_hot_word.removeAllViews();
                 fl_search_hot_word.addView(view);
             }
@@ -127,6 +182,21 @@ public class SearchHotWordFragment extends BaseFragment implements View.OnClickL
         switch (v.getId()){
             case R.id.text1:
                 searchWords.onSearch(texts[0]);
+                break;
+            case R.id.text2:
+                searchWords.onSearch(texts[1]);
+                break;
+            case R.id.text3:
+                searchWords.onSearch(texts[2]);
+                break;
+            case R.id.text4:
+                searchWords.onSearch(texts[3]);
+                break;
+            case R.id.text5:
+                searchWords.onSearch(texts[4]);
+                break;
+            case R.id.text6:
+                searchWords.onSearch(texts[5]);
                 break;
         }
     }

@@ -65,13 +65,13 @@ public class LocalVideoFragmentAdapter extends BaseAdapter {
             viewHolder.tv_video_time = convertView.findViewById(R.id.tv_video_time);
             viewHolder.tv_video_size = convertView.findViewById(R.id.tv_video_size);
             convertView.setTag(viewHolder);
-            viewHolder.img_video_frame.setTag(videoItem.getData());
+//            viewHolder.img_video_frame.setTag(videoItem.getData());
         }else{
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
         //注意：只有findviewbyid在里边，此在外边
-
+        viewHolder.img_video_frame.setTag(videoItem.getData());
         viewHolder.tv_video_name.setText(videoItem.getSimpleName());
         viewHolder.tv_video_time.setText(mTimeUtil.formatTime(Integer.parseInt(videoItem.getTime())));
         viewHolder.tv_video_size.setText(Formatter.formatFileSize(mContext,Integer.parseInt(videoItem.getSize())));

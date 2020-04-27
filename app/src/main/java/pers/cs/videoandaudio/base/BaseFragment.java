@@ -20,9 +20,17 @@ public abstract class BaseFragment extends Fragment {
     protected Context mContext;
 
     @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        this.mContext = context;
+    }
+
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.mContext = getActivity();
+        if(this.mContext == null){
+            this.mContext = getActivity();
+        }
     }
 
     @Nullable

@@ -16,11 +16,12 @@
     <!-- 取消分割线 -->
     <ListView
         android:id="@+id/lv_local_video"
-
         android:divider="@null"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     </ListView>
+
+
 
     <ProgressBar
         android:id="@+id/pb_local_video"

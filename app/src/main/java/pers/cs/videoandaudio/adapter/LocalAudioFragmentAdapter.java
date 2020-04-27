@@ -1,18 +1,20 @@
 package pers.cs.videoandaudio.adapter;
 
 import android.content.Context;
-import android.text.format.Formatter;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.fragment.app.FragmentManager;
+
 import java.util.List;
 
 import pers.cs.videoandaudio.R;
-import pers.cs.videoandaudio.bean.AudioItem;
-import pers.cs.videoandaudio.utils.TimeUtil;
+import pers.cs.videoandaudio.info.MusicInfo;
+import pers.cs.videoandaudio.ui.fragment.MoreFragment;
 
 /**
  * @author chensen
@@ -20,15 +22,19 @@ import pers.cs.videoandaudio.utils.TimeUtil;
  * @desc
  */
 public class LocalAudioFragmentAdapter extends BaseAdapter {
+    private static final String TAG = LocalAudioFragmentAdapter.class.getSimpleName();
+    private static final Boolean DEBUG = true;
 
     private Context mContext;
-    private List<AudioItem> mAudioItems;
-    private TimeUtil mTimeUtil;
+    private List<MusicInfo> mAudioItems;
 
-    public LocalAudioFragmentAdapter(Context context, List<AudioItem> audioItems) {
+    private FragmentManager mFragmentManager;
+
+
+    public LocalAudioFragmentAdapter(Context context, FragmentManager fragmentManager, List<MusicInfo> audioItems) {
         mContext = context;
+        mFragmentManager = fragmentManager;
         mAudioItems = audioItems;
-        mTimeUtil = new TimeUtil();
     }
 
 
@@ -50,38 +56,42 @@ public class LocalAudioFragmentAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        LocalVideoFragmentAdapter.ViewHolder viewHolder;
+        ViewHolder viewHolder;
         if(convertView == null){
-            viewHolder = new LocalVideoFragmentAdapter.ViewHolder();
+            viewHolder = new ViewHolder();
             //最后一个为null
-            convertView = View.inflate(mContext, R.layout.item_video,null);
-            viewHolder.img_video_frame = convertView.findViewById(R.id.img_video_frame);
-            viewHolder.tv_video_name = convertView.findViewById(R.id.tv_video_name);
-            viewHolder.tv_video_time = convertView.findViewById(R.id.tv_video_time);
-            viewHolder.tv_video_size = convertView.findViewById(R.id.tv_video_size);
+            convertView = View.inflate(mContext, R.layout.item_music,null);
+            viewHolder.tv_name = convertView.findViewById(R.id.tv_name);
+            viewHolder.tv_artist = convertView.findViewById(R.id.tv_artist);
+            viewHolder.img_music_option = convertView.findViewById(R.id.img_music_option);
+
             convertView.setTag(viewHolder);
         }else{
-            viewHolder = (LocalVideoFragmentAdapter.ViewHolder) convertView.getTag();
+            viewHolder = (ViewHolder) convertView.getTag();
         }
 
         //注意：只有findviewbyid在里边，此在外边
-        AudioItem audioItem = mAudioItems.get(position);
-        viewHolder.tv_video_name.setText(audioItem.getSimpleName());
-        if(audioItem.getTime() != null){
-            viewHolder.tv_video_time.setText(mTimeUtil.formatTime(Integer.parseInt(audioItem.getTime())));
+        MusicInfo audioItem = mAudioItems.get(position);
+        viewHolder.tv_name.setText(audioItem.getMusicName());
+        if(audioItem.getArtist() != null){
+            viewHolder.tv_artist.setText(audioItem.getArtist());
         }
+        viewHolder.img_music_option.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "onClick: "+getItem(position));
+                MoreFragment morefragment = MoreFragment.newInstance((MusicInfo) getItem(position));
+                morefragment.show(mFragmentManager, "music");
+            }
+        });
 
-        viewHolder.tv_video_size.setText(Formatter.formatFileSize(mContext,Integer.parseInt(audioItem.getSize())));
-
-        viewHolder.img_video_frame.setImageResource(R.drawable.music_default_bg);
         return convertView;
     }
 
 
     static class ViewHolder{
-        ImageView img_video_frame;
-        TextView tv_video_name;
-        TextView tv_video_time;
-        TextView tv_video_size;
+        TextView tv_name;
+        TextView tv_artist;
+        ImageView img_music_option;
     }
 }

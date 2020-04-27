@@ -53,6 +53,7 @@ dependencies {
     implementation files('libs/glide-full-4.7.0.jar')
     //使用Picasso加载图片
     implementation 'com.squareup.picasso:picasso:2.71828'
+
     //发送消息
     implementation 'org.greenrobot:eventbus:3.1.1'
     //播放视频

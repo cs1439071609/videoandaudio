@@ -47,6 +47,8 @@ public class PermissionHelper {
 
     private final static int WRITE_EXTERNAL_STORAGE_CODE = 102;
 
+    private final static int WRITE_SETTINGS_CODE = 103;
+
     private final static int REQUEST_OPEN_APPLICATION_SETTINGS_CODE = 12345;
 
     /**
@@ -57,7 +59,7 @@ public class PermissionHelper {
             new PermissionModel("存储空间", Manifest.permission.WRITE_EXTERNAL_STORAGE, "我们需要您允许我们读写你的存储卡，以方便我们临时保存一些数据",
                     WRITE_EXTERNAL_STORAGE_CODE)
     };
-
+//new PermissionModel("设置",Manifest.permission.WRITE_SETTINGS,"我们需要设置的权限来修改铃声",WRITE_SETTINGS_CODE)
     private Activity mActivity;
 
     private OnApplyPermissionListener mOnApplyPermissionListener;
@@ -78,7 +80,9 @@ public class PermissionHelper {
             for (final PermissionModel model : mPermissionModels) {
                 if (PackageManager.PERMISSION_GRANTED != ContextCompat.checkSelfPermission(mActivity, model.permission)) {
                     //未授权时请求授权
+
                     ActivityCompat.requestPermissions(mActivity, new String[]{model.permission}, model.requestCode);
+                    Log.d(TAG, "applyPermissions: "+model.name);
                     return;
                 }
             }

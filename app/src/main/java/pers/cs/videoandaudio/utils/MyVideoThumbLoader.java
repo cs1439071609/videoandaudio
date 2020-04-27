@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.util.LruCache;
 import android.widget.ImageView;
 
@@ -19,6 +20,8 @@ import pers.cs.videoandaudio.R;
  * @desc
  */
 public class MyVideoThumbLoader {
+    private static final String TAG = MyVideoThumbLoader.class.getSimpleName();
+    private static final Boolean DEBUG = true;
 
     private LruCache<String, Bitmap> mLruCache;
     private Context mContext;
@@ -34,7 +37,6 @@ public class MyVideoThumbLoader {
             protected int sizeOf(String key, Bitmap value) {
                 //这个方法会在每次存入缓存的时候调用
                 //计算一个元素的缓存大小
-
                 return value.getByteCount();
             }
         };
@@ -77,8 +79,11 @@ public class MyVideoThumbLoader {
         if (getBitmap(path) == null) {
             // 异步加载
             new MyBobAsynctack(imgview, path).execute();
+            Log.d(TAG, "showThumbByAsynctask: ");
         } else {
             imgview.setImageBitmap(getBitmap(path));
+            Log.d(TAG, "showThumbByAsynctask111: ");
+
         }
 
     }
@@ -105,12 +110,13 @@ public class MyVideoThumbLoader {
                         R.drawable.video_default_icon);
             }
             //直接对Bitmap进行缩略操作，最后一个参数定义为OPTIONS_RECYCLE_INPUT ，来回收资源
-            Bitmap bitmap2 = ThumbnailUtils.extractThumbnail(bitmap, DensityUtil.dip2px(100), DensityUtil.dip2px(80),
+            Bitmap bitmap2 = ThumbnailUtils.extractThumbnail(bitmap, DensityUtil.dip2px(100), DensityUtil.dip2px(60),
                     ThumbnailUtils.OPTIONS_RECYCLE_INPUT);
             // 加入缓存中
-            if (getBitmap(path) == null) {
-                addBitmap(path, bitmap2);
-            }
+            addBitmap(path, bitmap2);
+
+
+
             return bitmap2;
         }
 

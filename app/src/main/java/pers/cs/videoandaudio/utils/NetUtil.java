@@ -66,7 +66,7 @@ public class NetUtil {
 
     /**
      * 是否连接网络
-     * @param pContext
+     * @param context
      * @return
      */
     public static boolean isConnectInternet(Context context) {

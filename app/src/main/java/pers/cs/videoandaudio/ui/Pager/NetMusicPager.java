@@ -27,7 +27,7 @@ public class NetMusicPager extends BasePager {
         Log.d(TAG, "initView: " + "...");
 
         View view = View.inflate(mContext, R.layout.fragment_net_music,null);
-        tv_net_music = view.findViewById(R.id.tv_net_music);
+
         return view;
     }
 

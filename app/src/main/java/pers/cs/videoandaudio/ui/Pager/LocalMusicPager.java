@@ -27,7 +27,6 @@ public class LocalMusicPager extends BasePager {
         Log.d(TAG, "initView: " + "...");
 
         View view = View.inflate(mContext, R.layout.fragment_local_music,null);
-        tv_local_music = view.findViewById(R.id.tv_local_music);
         return view;
     }
 

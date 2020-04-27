@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -33,6 +32,7 @@ import butterknife.ButterKnife;
 import cn.jzvd.Jzvd;
 import cn.jzvd.JzvdStd;
 import pers.cs.videoandaudio.R;
+import pers.cs.videoandaudio.base.BaseActivity;
 import pers.cs.videoandaudio.base.BaseFragment;
 import pers.cs.videoandaudio.service.MusicPlayerService;
 import pers.cs.videoandaudio.ui.fragment.MusicFragment;
@@ -44,7 +44,7 @@ import pers.cs.videoandaudio.ui.fragment.VideoFragment;
  * @desc 使用DrawerLayout+Toolbar+NavigationView+TabLayout+ViewPager+Fragment
  */
 
-public class Main3Activity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class Main3Activity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final boolean DEBUG = true;
     private static final String TAG = Main3Activity.class.getSimpleName();

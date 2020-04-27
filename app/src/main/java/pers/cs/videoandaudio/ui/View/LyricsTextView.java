@@ -38,10 +38,16 @@ public class LyricsTextView extends TextView {
 
     //设置歌词列表
     public void setLyrics(List<Lyrics> lyrics){
+        this.mLyricsList = null;
+        invalidate();
         this.mLyricsList = lyrics;
+        invalidate();
     }
 
     public void setCurrentPosition(int currentPosition){
+        if(this.mLyricsList == null || this.mLyricsList.size() == 0){
+            return;
+        }
         this.currentPosition = currentPosition;
         //重绘
         //主线程使用
@@ -124,6 +130,8 @@ public class LyricsTextView extends TextView {
                 }
             }
 
+            if(currentLyric < mLyricsList.size()){
+
 
             //往上推移
             long sleepTime = mLyricsList.get(currentLyric).getSleepTime();
@@ -172,6 +180,7 @@ public class LyricsTextView extends TextView {
                     break;
                 }
                 canvas.drawText(text,width/2,currentHeight,paint);
+            }
             }
         }else{
             canvas.drawText("没有歌词",width/2,height/2,greenPaint);

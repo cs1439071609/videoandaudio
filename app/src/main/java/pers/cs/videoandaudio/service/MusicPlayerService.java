@@ -6,16 +6,12 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.content.ContentResolver;
 import android.content.Intent;
-import android.database.Cursor;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
 import android.os.RemoteException;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -28,9 +24,10 @@ import java.util.Random;
 
 import pers.cs.videoandaudio.IMusicPlayerService;
 import pers.cs.videoandaudio.R;
-import pers.cs.videoandaudio.bean.AudioItem;
+import pers.cs.videoandaudio.info.MusicInfo;
 import pers.cs.videoandaudio.ui.activity.AudioPlayer1Activity;
 import pers.cs.videoandaudio.utils.CacheUtils;
+import pers.cs.videoandaudio.utils.MusicUtils;
 
 public class MusicPlayerService extends Service {
 
@@ -43,13 +40,14 @@ public class MusicPlayerService extends Service {
 
     private MediaPlayer mMediaPlayer;
 
-    private List<AudioItem> mAudioItems;
+//    private List<AudioItem> mAudioItems;
+    private List<MusicInfo> mAudioItems;
 
     private int position = -1;
+//    private AudioItem mAudioItem;
+    private MusicInfo mAudioItem;
 
 
-
-    private AudioItem mAudioItem;
 
 
     public static final int ORDER_NORMAL = 1;
@@ -195,29 +193,32 @@ public class MusicPlayerService extends Service {
                 super.run();
                 //SystemClock.sleep(1000);
                 //查询数据
-                ContentResolver resolver = getContentResolver();
-//                Uri uri = MediaStore.Audio.Media.INTERNAL_CONTENT_URI;
-                Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-                //注意：此处使用MediaStore.Video.VideoColumns而不是MediaStore.Video.Media
-                String keys[] = {
-                        MediaStore.Audio.AudioColumns.DISPLAY_NAME,
-                        MediaStore.Audio.AudioColumns.SIZE,
-                        MediaStore.Audio.AudioColumns.DURATION,
-                        MediaStore.Audio.AudioColumns.ARTIST,
-                        MediaStore.Audio.AudioColumns.DATA};//地址
-                Cursor cursor = resolver.query(uri, keys, null, null, null);
-                if (cursor != null) {
-                    while (cursor.moveToNext()) {
-                        AudioItem audioItem = new AudioItem(
-                                cursor.getString(0),
-                                cursor.getString(1),
-                                cursor.getString(2),
-                                cursor.getString(4));
-                        audioItem.setArtist(cursor.getString(3));
-                        mAudioItems.add(audioItem);
-                    }
-                    cursor.close();
-                }
+//                ContentResolver resolver = getContentResolver();
+////                Uri uri = MediaStore.Audio.Media.INTERNAL_CONTENT_URI;
+//                Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+//                //注意：此处使用MediaStore.Video.VideoColumns而不是MediaStore.Video.Media
+//                String keys[] = {
+//                        MediaStore.Audio.AudioColumns.DISPLAY_NAME,
+//                        MediaStore.Audio.AudioColumns.SIZE,
+//                        MediaStore.Audio.AudioColumns.DURATION,
+//                        MediaStore.Audio.AudioColumns.ARTIST,
+//                        MediaStore.Audio.AudioColumns.DATA};//地址
+//                Cursor cursor = resolver.query(uri, keys, null, null, null);
+//                if (cursor != null) {
+//                    while (cursor.moveToNext()) {
+//                        AudioItem audioItem = new AudioItem(
+//                                cursor.getString(0),
+//                                cursor.getString(1),
+//                                cursor.getString(2),
+//                                cursor.getString(4));
+//                        Log.d(TAG, "run: "+audioItem.getData());
+//                        audioItem.setArtist(cursor.getString(3));
+//                        mAudioItems.add(audioItem);
+//                    }
+//                    cursor.close();
+//                }
+
+                mAudioItems = MusicUtils.queryMusicInfo(MusicPlayerService.this,"",0);
             }
         }.start();
     }
@@ -232,8 +233,11 @@ public class MusicPlayerService extends Service {
             mAudioItem = mAudioItems.get(position);
 
             if(mMediaPlayer != null){
-//                mMediaPlayer.release();
+
+                //重置
                 mMediaPlayer.reset();
+                //释放
+                //mMediaPlayer.release();
             }
 
             try {
@@ -373,7 +377,7 @@ public class MusicPlayerService extends Service {
     }
 
     private String getName(){
-        return mAudioItem.getSimpleName();
+        return mAudioItem.getMusicName();
     }
 
     private String getArtist(){

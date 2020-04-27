@@ -5,6 +5,7 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
@@ -23,15 +24,16 @@ import java.util.List;
 import pers.cs.videoandaudio.R;
 import pers.cs.videoandaudio.adapter.LocalAudioFragmentAdapter;
 import pers.cs.videoandaudio.base.BaseFragment;
-import pers.cs.videoandaudio.bean.AudioItem;
+import pers.cs.videoandaudio.info.MusicInfo;
 import pers.cs.videoandaudio.ui.activity.AudioPlayer1Activity;
+import pers.cs.videoandaudio.utils.MusicUtils;
 
 /**
  * @author chensen
  *
  * @time 2020/1/6  16:00
  *
- * @desc
+ * @desc 本地音乐
  *
  */
 
@@ -45,7 +47,7 @@ public class LocalMusicFragment extends BaseFragment {
     private ProgressBar pb_local_video;
 
     private LocalAudioFragmentAdapter mLocalAudioFragmentAdapter;
-    private List<AudioItem> mAudioItems;
+    private List<MusicInfo> mAudioItems;
 
 
     private Handler mHandler = new Handler() {
@@ -54,15 +56,10 @@ public class LocalMusicFragment extends BaseFragment {
             super.handleMessage(msg);
 
             if (mAudioItems != null && mAudioItems.size() > 0) {
-                mLocalAudioFragmentAdapter = new LocalAudioFragmentAdapter(mContext, mAudioItems);
+                mLocalAudioFragmentAdapter = new LocalAudioFragmentAdapter(mContext, getFragmentManager(),mAudioItems);
                 lv_local_video.setAdapter(mLocalAudioFragmentAdapter);
                 //隐藏文字
                 tv_local_video.setVisibility(View.GONE);
-
-
-
-
-
             } else {
                 tv_local_video.setVisibility(View.VISIBLE);
                 tv_local_video.setText("无本地音乐...");
@@ -96,20 +93,59 @@ public class LocalMusicFragment extends BaseFragment {
             intent.putExtra("position", position);
             startActivity(intent);
 
+            /*HashMap<Long, MusicInfo> infos = new HashMap<Long, MusicInfo>();
+            int len = mAudioItems.size();
+            long[] list = new long[len];
+            for (int i = 0; i < len; i++) {
+                MusicInfo info = mAudioItems.get(i);
+                list[i] = info.songId;
+                infos.put(list[i], info);
+            }
+            MusicPlayer.playAll(infos, list, position, false);
+            Intent intent = new Intent(mContext, PlayingActivity.class);
+            startActivity(intent);*/
         }
     }
 
     @Override
     protected void initData() {
         Log.d(TAG, "initData: " + "...");
-
         super.initData();
 
         getDataFromLocal();
     }
 
-
     private void getDataFromLocal() {
+        mAudioItems = new ArrayList<>();
+        new AsyncTask<Void, Void, Void>() {
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                mAudioItems = MusicUtils.queryMusicInfo(mContext,"",0);
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                if (mAudioItems != null && mAudioItems.size() > 0) {
+                    mLocalAudioFragmentAdapter = new LocalAudioFragmentAdapter(mContext, getFragmentManager(),mAudioItems);
+                    lv_local_video.setAdapter(mLocalAudioFragmentAdapter);
+                    //隐藏文字
+                    tv_local_video.setVisibility(View.GONE);
+                } else {
+                    tv_local_video.setVisibility(View.VISIBLE);
+                    tv_local_video.setText("无本地音乐...");
+                }
+                pb_local_video.setVisibility(View.GONE);
+            }
+        }.execute();
+    }
+
+    /**
+     * 废弃
+     */
+    private void getDataFromLocal1() {
 
         mAudioItems = new ArrayList<>();
 
@@ -138,14 +174,14 @@ public class LocalMusicFragment extends BaseFragment {
 
                     while (cursor.moveToNext()) {
 
-                        AudioItem audioItem = new AudioItem(
-                                cursor.getString(0),
-                                cursor.getString(1),
-                                cursor.getString(2),
-                                cursor.getString(4));
-                        audioItem.setArtist(cursor.getString(3));
-
-                        mAudioItems.add(audioItem);
+//                        AudioItem audioItem = new AudioItem(
+//                                cursor.getString(0),
+//                                cursor.getString(1),
+//                                cursor.getString(2),
+//                                cursor.getString(4));
+//                        audioItem.setArtist(cursor.getString(3));
+//
+//                        mAudioItems.add(audioItem);
                     }
 
                     cursor.close();

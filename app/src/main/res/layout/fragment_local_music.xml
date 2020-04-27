@@ -1,16 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.fragment.LocalMusicFragment">
+    android:layout_height="match_parent">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
+        android:textColor="@android:color/black"
+        android:text="@string/no_Local_video"
         android:layout_centerInParent="true"
-        android:id="@+id/tv_local_music"
+        android:id="@+id/tv_local_video"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="30sp" />
+        android:textSize="30sp"
+        android:visibility="gone"/>
+
+    <!-- 取消分割线 -->
+    <ListView
+        android:id="@+id/lv_local_video"
+        android:divider="@null"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </ListView>
+
+
+
+    <ProgressBar
+        android:id="@+id/pb_local_video"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </RelativeLayout>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollview"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:id="@+id/layout_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:src="@drawable/recommend_fm"
+                    android:layout_width="55dp"
+                    android:layout_height="55dp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="私人FM"
+                    android:textColor="#000000"
+                    android:textSize="12sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content">
+
+                <FrameLayout
+                    android:layout_width="55dp"
+                    android:layout_height="55dp">
+                    <ImageView
+                        android:src="@drawable/recommend_daily"
+                        android:layout_width="55dp"
+                        android:layout_height="55dp" />
+
+                    <TextView
+                        android:id="@+id/daily_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="15"
+                        android:textColor="@drawable/daily_text_color"
+                        android:textSize="25sp" />
+
+                </FrameLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="每日歌曲推荐"
+                    android:textColor="#000000"
+                    android:textSize="12sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:src="@drawable/recommend_rank"
+                    android:layout_width="55dp"
+                    android:layout_height="55dp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="云音乐新歌榜"
+                    android:textColor="#000000"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.3dp"
+            android:layout_marginTop="15dp"
+            android:background="#E0E0E0" />
+        <LinearLayout
+            android:layout_marginTop="15dp"
+            android:id="@+id/recommend_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <!--<include layout="@layout/recommend_playlist" />-->
+            <!--<include layout="@layout/recommend_newalbums"/>-->
+            <!--<include layout="@layout/recommend_radio"/>-->
+
+            <!--添加布局的位置-->
+
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

@@ -4,17 +4,27 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/share"
+            android:id="@+id/home"
 
-            android:title="分享"/>
+            android:title="主页"/>
 
     </group>
 
     <item android:title="Communicate">
         <menu>
             <item
-                android:title="hahh" />
+                android:id="@+id/share"
+
+                android:title="分享"/>
 
         </menu>
     </item>
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/back"
+
+            android:title="退出"/>
+
+    </group>
 </menu>

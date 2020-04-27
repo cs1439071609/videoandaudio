@@ -27,7 +27,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import org.greenrobot.eventbus.EventBus;
@@ -42,6 +41,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import pers.cs.videoandaudio.IMusicPlayerService;
 import pers.cs.videoandaudio.R;
+import pers.cs.videoandaudio.base.BaseActivity;
 import pers.cs.videoandaudio.bean.Lyrics;
 import pers.cs.videoandaudio.service.MusicPlayerService;
 import pers.cs.videoandaudio.ui.View.LyricsTextView;
@@ -54,7 +54,7 @@ import pers.cs.videoandaudio.utils.TimeUtil;
  * @desc
  */
 
-public class AudioPlayer1Activity extends AppCompatActivity {
+public class AudioPlayer1Activity extends BaseActivity {
 
 
     @BindView(R.id.tv_audio_time)
@@ -159,6 +159,7 @@ public class AudioPlayer1Activity extends AppCompatActivity {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             Log.e(TAG, "onServiceConnected: ");
+            //IMusicPlayerService.Stub.Proxy
             mIMusicPlayerService = IMusicPlayerService.Stub.asInterface(service);
             if (mIMusicPlayerService != null) {
                 try {
@@ -302,8 +303,6 @@ public class AudioPlayer1Activity extends AppCompatActivity {
         bindService(serviceIntent, conn, Context.BIND_AUTO_CREATE);
         //设置后只能启动一次服务
         startService(serviceIntent);
-
-
     }
 
     private void initData() {
@@ -588,23 +587,18 @@ public class AudioPlayer1Activity extends AppCompatActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         //监听物理按键音量增减
         if(keyCode == KeyEvent.KEYCODE_VOLUME_DOWN){
-
             currentVolume--;
             currentVolume = currentVolume > 0 ? currentVolume : 0;
             mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, currentVolume, 0);
             volume_seek.setProgress(currentVolume);
-
             return true;
         }else if(keyCode == KeyEvent.KEYCODE_VOLUME_UP){
             currentVolume++;
             currentVolume = currentVolume < maxVolume ? currentVolume : maxVolume;
             mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, currentVolume, 0);
             volume_seek.setProgress(currentVolume);
-
             return true;
         }
-
         return super.onKeyDown(keyCode, event);
-
     }
 }
