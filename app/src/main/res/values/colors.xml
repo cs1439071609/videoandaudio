@@ -13,4 +13,8 @@
     <color name="small_font">#FF757575</color>
 
     <color name="normalBackground">#fff2f4f5</color>
+
+
+    <color name="listSubTextColor">#ff888888</color>
+    <color name="listTextColor">#ff333333</color>
 </resources>

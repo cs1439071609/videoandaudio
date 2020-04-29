@@ -257,7 +257,9 @@ public class Main3Activity extends BaseActivity implements NavigationView.OnNavi
             case R.id.share:
 
                 break;
-
+            case R.id.exit:
+                finish();
+                break;
 
         }
         if(drawer != null){
@@ -322,8 +324,8 @@ public class Main3Activity extends BaseActivity implements NavigationView.OnNavi
         notificationManager.cancelAll();
 
         stopService(new Intent(this, MusicPlayerService.class));
-        super.onDestroy();
 
+        super.onDestroy();
 
     }
 

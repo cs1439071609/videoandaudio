@@ -12,17 +12,21 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 
 import pers.cs.videoandaudio.IMediaAidlInterface;
+import pers.cs.videoandaudio.R;
 import pers.cs.videoandaudio.service.MediaService;
 import pers.cs.videoandaudio.service.MusicPlayer;
+import pers.cs.videoandaudio.ui.activity.MusicStateListener;
+import pers.cs.videoandaudio.ui.fragment.QuickControlsFragment;
 
-
+import static pers.cs.videoandaudio.service.MusicPlayer.mService;
 
 //导入
-import static pers.cs.videoandaudio.service.MusicPlayer.mService;
 
 
 /**
@@ -37,6 +41,10 @@ public class BaseActivity extends AppCompatActivity implements ServiceConnection
     private MusicPlayer.ServiceToken mToken;
     //receiver 接受播放状态变化等
     private PlaybackStatus mPlaybackStatus;
+    //BaseMusicFragment
+    private ArrayList<MusicStateListener> mMusicListener = new ArrayList<>();
+    //底部播放控制栏
+    private QuickControlsFragment mQuickControlsFragment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -97,6 +105,7 @@ public class BaseActivity extends AppCompatActivity implements ServiceConnection
 
         unbindService();
         unregisterReceiver(mPlaybackStatus);
+        mMusicListener.clear();
         super.onDestroy();
     }
 
@@ -153,6 +162,13 @@ public class BaseActivity extends AppCompatActivity implements ServiceConnection
         if(DEBUG){
             Log.d(TAG,"updateTrackInfo:");
         }
+        Log.d(TAG,"updateTrackInfo:");
+        //将事件分发到Fragment
+        for (final MusicStateListener listener : mMusicListener) {
+            if (listener != null) {
+                listener.updateTrackInfo();
+            }
+        }
     }
 
     /**
@@ -178,7 +194,26 @@ public class BaseActivity extends AppCompatActivity implements ServiceConnection
         if(DEBUG){
             Log.d(TAG,"updateBuffer:");
         }
-    }  
+    }
+
+    /**
+     * @param show 显示或关闭底部播放控制栏
+     */
+    protected void showQuickControl(boolean show) {
+        Log.d(TAG, MusicPlayer.getQueue().length + "");
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        if (show) {
+            if (mQuickControlsFragment == null) {
+                mQuickControlsFragment = new QuickControlsFragment();
+                ft.add(R.id.bottom_container, mQuickControlsFragment).commitAllowingStateLoss();
+            } else {
+                ft.show(mQuickControlsFragment).commitAllowingStateLoss();
+            }
+        } else {
+            if (mQuickControlsFragment != null)
+                ft.hide(mQuickControlsFragment).commitAllowingStateLoss();
+        }
+    }
 
     @Override
     protected void onResume() {
@@ -188,5 +223,21 @@ public class BaseActivity extends AppCompatActivity implements ServiceConnection
 //            Log.d(TAG, "onResume: "+(mService==null)+this);
 //        }
         super.onResume();
+    }
+
+
+    public void setMusicStateListener(final MusicStateListener status) {
+        if (status == this) {
+            throw new UnsupportedOperationException("Override the method, don't add a listener");
+        }
+
+        if (status != null) {
+            mMusicListener.add(status);
+        }
+    }
+    public void removeMusicStateListener(final MusicStateListener status) {
+        if (status != null) {
+            mMusicListener.remove(status);
+        }
     }
 }

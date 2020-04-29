@@ -99,7 +99,7 @@ public class PlaylistActivity extends BaseActivity {
                 }
             });
         }
-
+        showQuickControl(true);
         if (playlistName != null && playlistDetail != null && albumPath != null) {
             albumTitle.setText(playlistName);
             albumDetails.setText(playlistDetail);
@@ -274,17 +274,20 @@ public class PlaylistActivity extends BaseActivity {
                 mHandler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        HashMap<Long, MusicInfo> infos = new HashMap<Long, MusicInfo>();
-                        int len = arraylist.size();
-                        long[] list = new long[len];
-                        for (int i = 0; i < len; i++) {
-                            MusicInfo info = arraylist.get(i);
-                            list[i] = info.songId;
-                            infos.put(list[i], info);
+                        if(MusicPlayer.isPlaying() && MusicPlayer.getCurrentAudioId() == arraylist.get(getAdapterPosition()).getSongId()){
+                            startActivity(new Intent(mContext,PlayingActivity.class));
+                        }else{
+                            HashMap<Long, MusicInfo> infos = new HashMap<Long, MusicInfo>();
+                            int len = arraylist.size();
+                            long[] list = new long[len];
+                            for (int i = 0; i < len; i++) {
+                                MusicInfo info = arraylist.get(i);
+                                list[i] = info.songId;
+                                infos.put(list[i], info);
+                            }
+                            if (getAdapterPosition() >= 0)
+                                MusicPlayer.playAll(infos, list, getAdapterPosition(), false);
                         }
-                        if (getAdapterPosition() >= 0)
-                            MusicPlayer.playAll(infos, list, getAdapterPosition(), false);
-                        startActivity(new Intent(mContext,PlayingActivity.class));
                     }
                 }, 70);
             }

@@ -554,8 +554,6 @@ public class AudioPlayer1Activity extends BaseActivity {
         super.onDestroy();
     }
 
-
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // handle item selection

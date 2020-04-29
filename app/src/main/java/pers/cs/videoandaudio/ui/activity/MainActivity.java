@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
     private RadioGroup rg_bottom_tag;
 
-    private List<BaseFragment> mFragments;
+    private List<Fragment> mFragments;
     private int position = 0;
     private Fragment mCurrentFragment;
 
@@ -88,11 +88,11 @@ public class MainActivity extends AppCompatActivity {
                     break;
             }
 
-            BaseFragment to = getFragment();
+            BaseFragment to = (BaseFragment) getFragment();
             switchFragment(mCurrentFragment,to);
         }
 
-        private BaseFragment getFragment() {
+        private Fragment getFragment() {
             return mFragments.get(position);
         }
 

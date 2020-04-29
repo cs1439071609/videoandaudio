@@ -1,7 +1,17 @@
 <resources>
-    <string name="app_name">手机影音</string>
-    <string name="videoplayer_name">手机影音(推荐)</string>
+    <!-- 全局 -->
+    <string name="app_name">FwPlayer</string>
+    <string name="videoplayer_name">FwPlayer(视频)</string>
+    <string name="musicplayer_name">FwPlayer(音乐)</string>
+
+
     <string name="splash">正在启动...</string>
+
+    <!-- 我的音乐 -->
+    <string name="local_music">本地音乐</string>
+    <string name="recent_play">最近播放</string>
+    <string name="local_manage">下载管理</string>
+    <string name="my_artist">我的歌手</string>
 
     <string name="Local_video">本地视频</string>
     <string name="Local_music">本地音乐</string>

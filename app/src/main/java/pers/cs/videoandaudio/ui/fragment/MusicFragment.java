@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
@@ -28,11 +29,12 @@ public class MusicFragment extends BaseFragment {
 
     private ViewPager vp_music;
     private TabLayout mTabLayout;
+    private QuickControlsFragment mQuickControlsFragment;
 
     private  MyViewPageAdapter pagerAdapter;
 
     private String[] titles;
-    private ArrayList<BaseFragment> fragments;
+    private ArrayList<Fragment> fragments;
 
     @Override
     protected View initView() {
@@ -42,7 +44,8 @@ public class MusicFragment extends BaseFragment {
 
         titles = new String[]{"我的","云村","发现"};
         fragments = new ArrayList<>();
-        fragments.add(new LocalMusicFragment());
+//        fragments.add(new LocalMusicFragment());
+        fragments.add(new MyMusicFragment());
         fragments.add(new CloudVillageFragment());
         fragments.add(new NetMusicFragment());
         pagerAdapter = new MyViewPageAdapter(getChildFragmentManager());
@@ -56,6 +59,13 @@ public class MusicFragment extends BaseFragment {
 
         initTabLayout();
 
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        if (mQuickControlsFragment == null) {
+            mQuickControlsFragment = new QuickControlsFragment();
+            ft.add(R.id.fl_controls, mQuickControlsFragment).commitAllowingStateLoss();
+        } else {
+            ft.show(mQuickControlsFragment).commitAllowingStateLoss();
+        }
 
         return view;
     }

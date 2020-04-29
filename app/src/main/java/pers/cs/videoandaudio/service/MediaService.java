@@ -1414,6 +1414,7 @@ public class MediaService extends Service {
             closeCursor();
             mCursor = openCursorAndGoToFirst(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                     PROJECTION, selection, selectionArgs);
+
         }
     }
     //内容提供者游标
@@ -1427,6 +1428,8 @@ public class MediaService extends Service {
                                            String selection, String[] selectionArgs) {
         Cursor c = getContentResolver().query(uri, projection,
                 selection, selectionArgs, null);
+        Log.d(TAG, "openCursorAndGoToFirst: "+(c==null));
+
         if (c == null) {
             return null;
         }
@@ -1827,6 +1830,12 @@ public class MediaService extends Service {
         public boolean isTrackPrepared() {
             return mIsTrackPrepared;
         }
+
+        public void exit(){
+            stop();
+            release();
+            Log.d(TAG, "exit: ");
+        }
     }
 
     private class MediaStoreObserver extends ContentObserver implements Runnable{
@@ -2108,7 +2117,7 @@ public class MediaService extends Service {
 
     }
     private void exit() {
-
+        mPlayer.exit();
     }
     private void timing(int time) {
 
@@ -2123,6 +2132,53 @@ public class MediaService extends Service {
         synchronized (this) {
             if (path == null) {
                 return false;
+            }
+
+            if (mCursor == null) {
+                Uri uri = Uri.parse(path);
+                String id = "";
+                try {
+//                    id = Long.valueOf(uri.getLastPathSegment());
+                    id = uri.toString().substring(uri.toString().lastIndexOf(":")+1);
+                } catch (NumberFormatException ex) {
+                    // Ignore
+                }
+
+                Log.d(TAG, "openFile: "+id);
+//                if (id != -1 && path.startsWith(
+//                        MediaStore.Audio.Media.EXTERNAL_CONTENT_URI.toString())) {
+//                    //content://media/external/audio/media
+//                    Log.d(TAG, "openFile: "+MediaStore.Audio.Media.EXTERNAL_CONTENT_URI.toString());
+//
+//                    updateCursor(uri);
+//                }else if (id != -1 && path.startsWith(
+//                        MediaStore.Files.getContentUri("external").toString())) {
+//                    //content://media/external/file
+//                    Log.d(TAG, "openFile: "+MediaStore.Files.getContentUri("external").toString());
+//
+//                    updateCursor(id);
+//                }else{
+                    Log.d(TAG, "openFile: ");
+                    //_data
+                    String where = MediaStore.Audio.Media.DATA + "=?";
+                    //
+                    String[] selectionArgs = new String[]{id+""};
+                    updateCursor(MediaStore.Audio.Media._ID + "=?", selectionArgs);
+//                }
+                Log.d(TAG, "openFile: "+(mCursor==null));
+                try {
+                    if (mCursor != null) {
+                        mPlaylist.clear();
+                        mPlaylist.add(new MusicTrack(
+                                mCursor.getLong(0), -1));
+                        notifyChange(QUEUE_CHANGED);
+                        mPlayPos = 0;
+                        mPlayer.setDataSource(mCursor.getString(mCursor
+                                .getColumnIndex(MediaStore.Audio.Media.DATA)));
+                    }
+                } catch (final UnsupportedOperationException ex) {
+                    // Ignore
+                }
             }
             return false;
         }

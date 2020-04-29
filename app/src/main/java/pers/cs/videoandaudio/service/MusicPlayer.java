@@ -83,6 +83,12 @@ public class MusicPlayer {
         mContextWrapper.unbindService(mBinder);
         Log.d(TAG, "ServiceTest-MusicPlayer-unbindFromService: " + mConnectionMap.size());
         if (mConnectionMap.isEmpty()) {
+//            mContextWrapper.stopService(new Intent().setClass(mContextWrapper, MediaService.class));
+            try {
+                mService.exit();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
             mService = null;
             Log.d(TAG, "ServiceTest-MusicPlayer-unbindFromService:All ");
         }
@@ -582,6 +588,13 @@ public class MusicPlayer {
         }
     }
 
-
+    public static final void openFile(final String path) {
+        if (mService != null) {
+            try {
+                mService.openFile(path);
+            } catch (final RemoteException ignored) {
+            }
+        }
+    }
 
 }

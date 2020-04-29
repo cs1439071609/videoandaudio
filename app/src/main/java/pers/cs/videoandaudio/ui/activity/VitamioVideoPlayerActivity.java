@@ -133,7 +133,7 @@ public class VitamioVideoPlayerActivity extends AppCompatActivity {
     //隐藏音量
     private static final int HIDEVOLUME = 3;
 
-
+    private static final int FOCUSCHANGE = 4;
 
     //监听电量的广播
     private MyReceiver mMyReceiver;
@@ -241,9 +241,30 @@ public class VitamioVideoPlayerActivity extends AppCompatActivity {
                 case HIDEVOLUME:
                     media_volume.setVisibility(View.GONE);
                     break;
+
+                case FOCUSCHANGE:
+                    switch (msg.arg1) {
+                        case AudioManager.AUDIOFOCUS_LOSS:
+                        case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
+//                            video_view.pause();
+                            break;
+                        case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
+
+                            break;
+                        case AudioManager.AUDIOFOCUS_GAIN:
+                            if (!video_view.isPlaying()){
+                                video_view.start();
+                            } else {
+
+                            }
+                            break;
+                        default:
+                    }
+                    break;
             }
         }
     };
+
 
 
     private String getSystemTime() {
@@ -278,6 +299,7 @@ public class VitamioVideoPlayerActivity extends AppCompatActivity {
     }
 
     private void initView() {
+
         video_view = findViewById(R.id.videoview);
 
         media_controller1 = findViewById(R.id.media_controller1);
@@ -620,12 +642,28 @@ public class VitamioVideoPlayerActivity extends AppCompatActivity {
         builder.show();
     }
 
+    //监听音频资源是否被抢占的监听器
+    private AudioManager.OnAudioFocusChangeListener mOnAudioFocusChangeListener = new AudioManager.OnAudioFocusChangeListener() {
+        @Override
+        public void onAudioFocusChange(int focusChange) {
+            mHandler.obtainMessage(FOCUSCHANGE, focusChange, 0).sendToTarget();
+        }
+    };
+
     class MyOnPreparedListener implements MediaPlayer.OnPreparedListener {
 
         //当底层解码准备好回调
         @Override
         public void onPrepared(MediaPlayer mp) {
             Log.e(TAG, "onPrepared: "+"ssssssssssss");
+
+
+            int status = mAudioManager.requestAudioFocus(mOnAudioFocusChangeListener,
+                    AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
+            if (status != AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+//                return;
+            }
+
             mp.setPlaybackSpeed(1.0f);
             videoWidth = mp.getVideoWidth();
             videoHeight = mp.getVideoHeight();
@@ -841,7 +879,7 @@ public class VitamioVideoPlayerActivity extends AppCompatActivity {
         if (mHandler != null) {
             mHandler.removeCallbacksAndMessages(null);
         }
-
+        mAudioManager.abandonAudioFocus(mOnAudioFocusChangeListener);
         super.onDestroy();
 
     }

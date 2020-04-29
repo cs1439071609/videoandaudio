@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ll_controls"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:background="#f9ffffff"
+    android:gravity="center_vertical"
+    tools:context=".ui.fragment.QuickControlsFragment">
+
+    <LinearLayout
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <ImageView
+            android:id="@+id/img_controls_album"
+            android:layout_marginLeft="6dp"
+            android:layout_marginTop="3dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/placeholder_disk_210"
+            android:layout_width="43dp"
+            android:layout_height="43dp" />
+
+        <LinearLayout
+            android:layout_marginLeft="6dp"
+            android:paddingTop="6dp"
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:text="我"
+                android:id="@+id/tv_controls_name"
+                android:layout_width="wrap_content"
+                android:layout_height="23dp"
+                android:ellipsize="marquee"
+                android:singleLine="true"
+                android:textSize="17dp" />
+
+            <TextView
+                android:text="我"
+                android:id="@+id/tv_controls_singer"
+                android:layout_width="wrap_content"
+                android:layout_height="16dp"
+                android:ellipsize="end"
+                android:maxLength="20"
+                android:maxLines="1"
+                android:textSize="10dp" />
+
+
+        </LinearLayout>
+
+
+        <ImageView
+            android:id="@+id/img_controls_play"
+            android:src="@drawable/playbar_btn_pause"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:layout_width="43dp"
+            android:layout_height="43dp" />
+        <ImageView
+            android:id="@+id/img_controls_next"
+            android:src="@drawable/playbar_btn_next"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:layout_width="43dp"
+            android:layout_height="43dp" />
+        <ImageView
+            android:id="@+id/img_controls_list"
+            android:src="@drawable/playbar_btn_playlist"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:layout_width="43dp"
+            android:layout_height="43dp" />
+    </LinearLayout>
+
+</LinearLayout>

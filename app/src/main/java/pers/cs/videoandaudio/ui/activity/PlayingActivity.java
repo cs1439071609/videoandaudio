@@ -1,10 +1,12 @@
 package pers.cs.videoandaudio.ui.activity;
 
 import android.content.Intent;
+import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -80,6 +82,11 @@ public class PlayingActivity extends BaseActivity {
     private ActionBar ab;
     private LyricsTextView lyricsTextView;
 
+    private AudioManager mAudioManager;
+    private int maxVolume;
+    private int currentVolume;
+
+    private MyOnSeekBarChangeListener mMyOnSeekBarChangeListener;
 
     //更新歌词
     private static final int UPDATE_LYRICS = 2;
@@ -106,13 +113,32 @@ public class PlayingActivity extends BaseActivity {
                 }
             });
         }
-        seekbarAudio.setOnSeekBarChangeListener(new MyOnSeekBarChangeListener());
+        mMyOnSeekBarChangeListener = new MyOnSeekBarChangeListener();
+        seekbarAudio.setOnSeekBarChangeListener(mMyOnSeekBarChangeListener);
+        volume_seek.setOnSeekBarChangeListener(mMyOnSeekBarChangeListener);
+
+        //从第三方软件传过来需要
+        Uri uri = getIntent().getData();
+        Log.d(TAG, "onCreate: "+(uri==null ? "" : uri.getPath()));
+        if(uri != null){
+            MusicPlayer.openFile(uri.getPath());
+            MusicPlayer.playOrPause();
+        }else{
+            initView();
+        }
+
+        initData();
 
 
+    }
 
-        initView();
+    private void initData() {
+        mAudioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
+        maxVolume = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        currentVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
 
-
+        volume_seek.setMax(maxVolume);
+        volume_seek.setProgress(currentVolume);
     }
 
     private void initView() {
@@ -199,10 +225,9 @@ public class PlayingActivity extends BaseActivity {
 
             if (seekBar == volume_seek) {
                 if (fromUser) {
-
                     //flags为1显示系统音量条
-                    //                    mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, progress, 0);
-                    //                    currentVolume = progress;
+                    mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, progress, 0);
+                    currentVolume = progress;
                 }
             } else if (seekBar == seekbarAudio) {
                 if (fromUser) {
@@ -403,5 +428,27 @@ public class PlayingActivity extends BaseActivity {
         Log.d(TAG, "onResume: "+this);
 //        seekbarAudio.removeCallbacks(mUpdateProgress);
 //        seekbarAudio.postDelayed(mUpdateProgress, 200);
+    }
+
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        //监听物理按键音量增减
+        if(keyCode == KeyEvent.KEYCODE_VOLUME_DOWN){
+            currentVolume--;
+            currentVolume = currentVolume > 0 ? currentVolume : 0;
+            mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, currentVolume, 0);
+            volume_seek.setProgress(currentVolume);
+            return true;
+        }else if(keyCode == KeyEvent.KEYCODE_VOLUME_UP){
+            currentVolume++;
+            currentVolume = currentVolume < maxVolume ? currentVolume : maxVolume;
+            mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, currentVolume, 0);
+            volume_seek.setProgress(currentVolume);
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+
     }
 }

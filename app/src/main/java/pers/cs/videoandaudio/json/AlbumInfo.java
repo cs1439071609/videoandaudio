@@ -50,6 +50,7 @@ public class AlbumInfo implements Parcelable {
     private String artist_id;
 
 
+
     public String getResource_type_ext() {
         return resource_type_ext;
     }
@@ -196,7 +197,7 @@ public class AlbumInfo implements Parcelable {
     /**
      * 负责反序列化
      */
-    public static final Creator<AlbumInfo> creator = new Creator<AlbumInfo>() {
+    public static final Creator<AlbumInfo> CREATOR = new Creator<AlbumInfo>() {
         /**
          * 从序列化对象中，获取原始的对象
          * @param source

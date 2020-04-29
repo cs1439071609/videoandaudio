@@ -1,17 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
 
+    <ImageView
+        android:src="@drawable/song_play_icon"
+        android:visibility="gone"
+        android:id="@+id/img_play_state"
+        android:layout_marginLeft="6dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
     <LinearLayout
-        android:layout_toLeftOf="@id/img_music_option"
         android:layout_marginLeft="7dp"
         android:padding="6dp"
         android:orientation="vertical"
         android:gravity="center"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
+        android:layout_weight="1"
         android:layout_height="60dp">
 
         <TextView
@@ -40,8 +49,7 @@
         android:layout_alignParentRight="true"
         android:id="@+id/img_music_option"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_centerVertical="true"
+        android:layout_height="wrap_content"
         android:padding="15dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:src="@drawable/list_icn_more" />
@@ -50,4 +58,4 @@
         <!--android:background="#55000000"-->
         <!--android:layout_width="match_parent"-->
         <!--android:layout_height="1dp"/>-->
-</RelativeLayout>
+</LinearLayout>

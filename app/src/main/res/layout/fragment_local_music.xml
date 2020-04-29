@@ -7,7 +7,7 @@
         android:textColor="@android:color/black"
         android:text="@string/no_Local_video"
         android:layout_centerInParent="true"
-        android:id="@+id/tv_local_video"
+        android:id="@+id/tv_local_music"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="30sp"
@@ -15,16 +15,21 @@
 
     <!-- 取消分割线 -->
     <ListView
-        android:id="@+id/lv_local_video"
+        android:id="@+id/lv_local_music"
         android:divider="@null"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     </ListView>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerview_local_music"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
+    </androidx.recyclerview.widget.RecyclerView>
 
 
     <ProgressBar
-        android:id="@+id/pb_local_video"
+        android:id="@+id/pb_local_music"
         android:layout_centerInParent="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />

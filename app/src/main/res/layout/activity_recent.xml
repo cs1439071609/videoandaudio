@@ -5,29 +5,40 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.activity.RankPlaylistActivity">
+    tools:context=".ui.activity.RecentActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:fitsSystemWindows="true"
         android:minHeight="?attr/actionBarSize"
-        android:background="#60919191"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
     </androidx.appcompat.widget.Toolbar>
 
-    <include layout="@layout/header_rank_playlist"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerview"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_weight="1"
         android:layout_height="0dp">
 
-    </androidx.recyclerview.widget.RecyclerView>
+        <TextView
+            android:visibility="gone"
+            android:layout_gravity="center"
+            android:textColor="@color/listSubTextColor"
+            android:text="暂无播放记录"
+            android:id="@+id/tv_recent_no"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview_recent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </androidx.recyclerview.widget.RecyclerView>
+    </FrameLayout>
+
+
     <FrameLayout
-        android:id="@+id/bottom_container"
+        android:id="@+id/bottom_control"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom" />
+        android:layout_height="wrap_content">
+    </FrameLayout>
 </LinearLayout>

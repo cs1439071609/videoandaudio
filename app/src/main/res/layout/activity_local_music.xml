@@ -5,29 +5,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.activity.RankPlaylistActivity">
+    tools:context=".ui.activity.LocalMusicActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:fitsSystemWindows="true"
         android:minHeight="?attr/actionBarSize"
-        android:background="#60919191"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
     </androidx.appcompat.widget.Toolbar>
 
-    <include layout="@layout/header_rank_playlist"/>
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tab_localmusic"
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+    </com.google.android.material.tabs.TabLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerview"
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/vp_localmusic"
         android:layout_width="match_parent"
         android:layout_weight="1"
         android:layout_height="0dp">
+    </androidx.viewpager.widget.ViewPager>
 
-    </androidx.recyclerview.widget.RecyclerView>
     <FrameLayout
         android:id="@+id/bottom_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom" />
+        android:layout_height="wrap_content"></FrameLayout>
 </LinearLayout>
